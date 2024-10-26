@@ -17,10 +17,25 @@ class Customer : public clsPerson
         vector<string> vCustomerData;
         vCustomerData = clsString::Split(Line, Seperator);
 
-        return Customer(vCustomerData[0], vCustomerData[1], vCustomerData[2],
+        return Customer(enStatue::enCustomer, vCustomerData[0], vCustomerData[1], vCustomerData[2],
             vCustomerData[3]);
 
     }
+
+    static string _ConverCustomerObjectToLine(Customer customer, string Seperator = "#//#")
+    {
+
+        string stCustomerRecord = "";
+        stCustomerRecord += customer.GetName() + Seperator;
+        stCustomerRecord += customer.GetEmail() + Seperator;
+        stCustomerRecord += customer.GetPhone() + Seperator;
+        stCustomerRecord += customer.getCustomerId();
+
+
+        return stCustomerRecord;
+
+    }
+
     static  vector <Customer> _LoadCustomerDataFromFile()
     {
 
@@ -28,7 +43,7 @@ class Customer : public clsPerson
 
         fstream MyFile;
         MyFile.open("Customer.txt", ios::in);//read Mode
-
+         
         if (MyFile.is_open())
         {
 
@@ -51,6 +66,9 @@ class Customer : public clsPerson
 
     }
 
+
+
+
     void _AddDataLineToFile(string  stDataLine)
     {
         fstream MyFile;
@@ -66,10 +84,39 @@ class Customer : public clsPerson
 
     }
 
+    static void _SaveCustomerDataToFile(vector <Customer> vCustomer)
+    {
+
+        fstream MyFile;
+        MyFile.open("Clients.txt", ios::out);//overwrite
+
+        string DataLine;
+
+        if (MyFile.is_open())
+        {
+
+            for (Customer C : vCustomer)
+            {
+                DataLine = _ConverCustomerObjectToLine(C);
+                MyFile << DataLine << endl;
+
+            }
+
+            MyFile.close();
+
+        }
+
+    }
+
 public:
 
-    Customer(string name, string email, string phone, string customerId) :
-        clsPerson(name, email, phone)
+    Customer(enStatue statue, string name, string email, string phone, string customerId) :
+        clsPerson(statue, name, email, phone)
+    {
+        _CustomerId = customerId;
+    }
+
+    void setCustomerId(string customerId)
     {
         _CustomerId = customerId;
     }
@@ -82,34 +129,6 @@ public:
 
    
 
-    static Customer Find(string customerId)
-    {
-
-
-
-        fstream MyFile;
-        MyFile.open("Customer.txt", ios::in);//read Mode
-
-        if (MyFile.is_open())
-        {
-            string Line;
-            while (getline(MyFile, Line))
-            {
-                Customer customer = _ConvertLinetoCustomerObject(Line);
-                if (customer.getCustomerId() == customerId)
-                {
-                    MyFile.close();
-                    return customer;
-                }
-
-            }
-
-            MyFile.close();
-
-        }
-        return Customer("", "", "", "");
-    }
-
 
     static Customer Find(string customerId)
     {
@@ -136,10 +155,38 @@ public:
             MyFile.close();
 
         }
-        return Customer("", "", "", "");
+        return Customer(enStatue::enCustomer, "", "", "", "");
     }
 
-    static bool IsClientExist(string customerId)
+    static Customer FindName(string Name)
+    {
+
+
+
+        fstream MyFile;
+        MyFile.open("Customer.txt", ios::in);//read Mode
+
+        if (MyFile.is_open())
+        {
+            string Line;
+            while (getline(MyFile, Line))
+            {
+                Customer customer = _ConvertLinetoCustomerObject(Line);
+                if (customer.GetName() == Name)
+                {
+                    MyFile.close();
+                    return customer;
+                }
+
+            }
+
+            MyFile.close();
+
+        }
+        return Customer(enStatue::enCustomer, "", "", "", "");
+    }
+
+    static bool IsCustomerExist(string customerId)
     {
 
         Customer customer = Customer::Find(customerId);
@@ -147,17 +194,15 @@ public:
         return customer.getCustomerId() == customerId;
     }
 
-    void CreatAccount()
+
+    static bool IsCustomerNameExist(string Name)
     {
-        string customerId;
-        getline(cin >> ws, customerId);
-        while (IsClientExist(customerId))
-        {
-            cout << "sorry, is exit, enter another id.";
-            getline(cin >> ws, customerId);
 
-        }
+        Customer customer = Customer::FindName(Name);
 
+        return customer.GetName() == Name;
     }
+
+    
 };
 

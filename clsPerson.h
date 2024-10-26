@@ -3,19 +3,22 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
+enum enStatue { enAdmain = 1, enCustomer };
+
 class clsPerson
 {
 private:
-
+    enStatue _Statue;
     string _Name;
     string _Email;
     string _Phone;
 
 public:
 
-    clsPerson(string Name, string Email, string Phone)
+    clsPerson(enStatue statue ,string Name, string Email, string Phone)
     {
-
+        _Statue = statue;
         _Name = Name;
         _Email = Email;
         _Phone = Phone;

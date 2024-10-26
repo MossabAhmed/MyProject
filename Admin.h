@@ -10,7 +10,6 @@ using namespace std;
 class Admin : public clsPerson
 {
 private:
-
     string _Username;
     string _Password;
     string _AdminId;
@@ -21,7 +20,7 @@ private:
         vector<string> vAdminData;
         vAdminData = clsString::Split(Line, Seperator);
 
-        return Admin(vAdminData[0], vAdminData[1], vAdminData[2],
+        return Admin(enStatue::enAdmain, vAdminData[0], vAdminData[1], vAdminData[2],
             vAdminData[3], vAdminData[4], vAdminData[5]);
 
     }
@@ -64,8 +63,8 @@ private:
  public:
 
 
-    Admin(string name, string email, string phone, string username, string password, string adminId) : 
-        clsPerson(name, email, phone )
+    Admin(enStatue statue,string name, string email, string phone, string username, string password, string adminId) : 
+        clsPerson(statue, name, email, phone )
     {
         _Username = username;
         _Password = password;
@@ -110,7 +109,7 @@ private:
             MyFile.close();
 
         }
-        return Admin("", "", "", "", "", "");
+        return Admin(enStatue::enAdmain, "", "", "", "", "", "");
     }
     static Admin Find(string username)
     {
@@ -137,41 +136,25 @@ private:
             MyFile.close();
 
         }
-        return Admin("", "", "", "", "", "");
+        return Admin(enStatue::enAdmain, "", "", "", "", "", "");
     }
 
 
-    static bool IsClientExist(string customerId)
+    static bool IsAdminExist(string username)
     {
 
-        Admin customer = Admin::Find(customerId);
+        Admin admin = Admin::Find(username);
 
-        return customer.getusername() == customerId;
+        return admin.getusername() == username;
     }
-    static bool IsClientExist(string customerId, string password)
+    static bool IsAdminExist(string username, string password)
     {
 
-        Admin customer = Admin::Find(customerId, password);
+        Admin admin = Admin::Find(username, password);
 
-        return customer.getusername() == customerId && customer.getpassword() == password;
+        return admin.getusername() == username && admin.getpassword() == password;
     }
-    void CreatAccount()
-    {
-        Admin admin("", "", "", "", "", "");
-        string customerId;
-        getline(cin >> ws, customerId);
-        while (IsClientExist(customerId))
-        {
-            cout << "sorry, is exit, enter another id.";
-            getline(cin >> ws, customerId);
-
-        }
-        admin.SetName(customerId);
-        getline(cin >> ws, customerId);
-        admin.SetEmail(customerId);
-
-
-    }
+    
 
 };
 

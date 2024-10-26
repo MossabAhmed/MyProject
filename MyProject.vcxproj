@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Booking.h" />
+    <ClInclude Include="clsInputValidate.h" />
     <ClInclude Include="clsPerson.h" />
     <ClInclude Include="clsString.h" />
     <ClInclude Include="Customer.h" />
