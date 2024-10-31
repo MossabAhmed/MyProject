@@ -24,6 +24,8 @@ public:
         _Phone = Phone;
     }
 
+    clsPerson(){}
+
     void SetName(string Name)
     {
         _Name = Name;

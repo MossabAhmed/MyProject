@@ -3,6 +3,7 @@
 #include <string>
 #include "clsPerson.h"
 #include "clsString.h"
+#include "clsInputValidate.h"
 #include <vector>
 #include <fstream>
 using namespace std;
@@ -88,7 +89,7 @@ class Customer : public clsPerson
     {
 
         fstream MyFile;
-        MyFile.open("Clients.txt", ios::out);//overwrite
+        MyFile.open("Customer.txt", ios::out);//overwrite
 
         string DataLine;
 
@@ -116,6 +117,8 @@ public:
         _CustomerId = customerId;
     }
 
+    Customer(){}
+
     void setCustomerId(string customerId)
     {
         _CustomerId = customerId;
@@ -125,10 +128,6 @@ public:
     {
         return _CustomerId;
     }
-
-
-   
-
 
     static Customer Find(string customerId)
     {
@@ -203,6 +202,36 @@ public:
         return customer.GetName() == Name;
     }
 
+    static void AddCustomer(string& name)
+    {
+        Customer customer(enStatue::enCustomer, "", "", "", "");
+        while (IsCustomerNameExist(name))
+        {
+            cout << "\nthis event already exit, enter another name: ";
+            name = clsInputValidate::ReadString();
+        }
+        customer.SetName(name);
+
+        cout << "\nenter your email? ";
+        string word = clsInputValidate::ReadString();
+        customer.SetEmail(word);
+
+        cout << "\nenter your phone? ";
+        word = clsInputValidate::ReadString();
+        customer.SetPhone(word);
+
+        random_device rd;
+        uniform_int_distribution<int> dist(2000000, 2999999);
+        word = to_string(dist(rd));
+
+        while (IsCustomerExist(word))
+        {
+            word = to_string(dist(rd));
+
+        }
+        customer.setCustomerId(word);
+        customer._AddDataLineToFile(_ConverCustomerObjectToLine(customer));
+    }
     
 };
 

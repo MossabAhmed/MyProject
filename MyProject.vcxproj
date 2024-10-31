@@ -132,11 +132,14 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Booking.h" />
+    <ClInclude Include="clsDate.h" />
     <ClInclude Include="clsInputValidate.h" />
     <ClInclude Include="clsPerson.h" />
     <ClInclude Include="clsString.h" />
     <ClInclude Include="Customer.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Seat.h" />
+    <ClInclude Include="Waiting.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

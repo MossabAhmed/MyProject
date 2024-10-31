@@ -8,7 +8,7 @@
 using namespace std;
 
 
-class Event
+class Event 
 {
 
 	string _EventType;
@@ -16,6 +16,7 @@ class Event
 	string _Location;
 	string _TimeDate;
 	string _EventId;
+	float _Price;
 	int _TotalTickets;
 	int _TotalSeats;
 	bool checkdel = false;
@@ -26,7 +27,7 @@ class Event
 		vEventData = clsString::Split(Line, Seperator);
 
 		return Event(vEventData[0], vEventData[1], vEventData[2],
-			vEventData[3], vEventData[4], stoi(vEventData[5]), stoi(vEventData[6]));
+			vEventData[3], vEventData[4], stod(vEventData[5]),stoi(vEventData[6]), stoi(vEventData[7]));
 
 	}
 
@@ -39,14 +40,48 @@ class Event
 		stEventRecord += event.getLocation() + Seperator;
 		stEventRecord += event.getDate() + Seperator;
 		stEventRecord += event.getEventId() + Seperator;
+		stEventRecord += to_string(event.getPrice()) + Seperator;
 		stEventRecord += to_string(event.getTotalTickets()) + Seperator;
 		stEventRecord += to_string(event.getTotalSeats());
-
-
 
 		return stEventRecord;
 
 	}
+
+
+	
+
+	void _AddDataLineToFile(string  stDataLine)
+	{
+		fstream MyFile;
+		MyFile.open("Event.txt", ios::out | ios::app);
+
+		if (MyFile.is_open())
+		{
+
+			MyFile << stDataLine << endl;
+
+			MyFile.close();
+		}
+
+	}
+
+public:
+
+	Event(string eventType, string name, string location, string date, string eventId, float price, int totalTickets, int totalSeats)
+	{
+		_EventType = eventType;
+		_Name = name;
+		_Location = location;
+		_TimeDate = date;
+		_EventId = eventId;
+		_Price = price;
+		_TotalTickets = totalTickets;
+		_TotalSeats = totalSeats;
+	}
+
+	Event(){}
+
 
 	static  vector <Event> _LoadEventDataFromFile()
 	{
@@ -103,34 +138,6 @@ class Event
 		}
 
 	}
-
-	void _AddDataLineToFile(string  stDataLine)
-	{
-		fstream MyFile;
-		MyFile.open("Event.txt", ios::out | ios::app);
-
-		if (MyFile.is_open())
-		{
-
-			MyFile << stDataLine << endl;
-
-			MyFile.close();
-		}
-
-	}
-
-public:
-
-	Event(string eventType, string name, string location, string date, string eventId, int totalTickets, int totalSeats)
-	{
-		_EventType = eventType;
-		_Name = name;
-		_Location = location;
-		_TimeDate = date;
-		_EventId = eventId;
-		_TotalTickets = totalTickets;
-		_TotalSeats = totalSeats;
-	}
 	
 	void setEventType(string eventType)
 	{
@@ -162,6 +169,15 @@ public:
 		return _Location;
 	}
 
+	void setPrice(float price)
+	{
+		_Price = price;
+	}
+
+	float getPrice()
+	{
+		return _Price;
+	}
 
 	void setEventId(string eventId)
 	{
@@ -233,7 +249,7 @@ public:
 			MyFile.close();
 
 		}
-		return Event("", "", "", "", "", 0, 0 );
+		return Event("", "", "", "", "", 0.0, 0, 0 );
 	}
 
 	static bool IsEventNameExist(string name)
@@ -269,7 +285,7 @@ public:
 			MyFile.close();
 
 		}
-		return Event("", "", "", "", "", 0, 0);
+		return Event("", "", "", "", "", 0.0, 0, 0);
 	}
 
 	static bool IsEventIdExist(string eventId)
@@ -292,7 +308,7 @@ public:
 			cout << "\nthis event already exit, enter another name: ";
 			name = clsInputValidate::ReadString();
 		}
-		Event event("", "", "", "", "", 0, 0);
+		Event event("", "", "", "", "", 0.0, 0, 0);
 		event.setName(name);
 
 		cout << "\nenter type of event? ";
@@ -318,6 +334,10 @@ public:
 		}
 		event.setEventId(name);
 
+		cout << "enter price? ";
+		float price = clsInputValidate::ReadDblNumber();
+		event.setPrice(price);
+
 		cout << "enter total tickets? ";
 		int total = clsInputValidate::ReadIntNumber();
 		event.setTotalTickets(total);
@@ -342,6 +362,10 @@ public:
 		cout << "enter date of event? ";
 		name = clsInputValidate::ReadString();
 		event.setDate(name);
+
+		cout << "enter price? ";
+		float price = clsInputValidate::ReadDblNumber();
+		event.setPrice(price);
 
 		cout << "enter total tickets? ";
 		int total = clsInputValidate::ReadIntNumber();
