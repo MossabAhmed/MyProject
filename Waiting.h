@@ -11,11 +11,15 @@ class Waiting
     string _WaitingDate;
     string _Customer_Id;
     string _EventName;
+    bool checkdel = false;
     static Waiting _ConvertLinetoWaitingObject(string Line, string Seperator = "#//#")
     {
         vector<string> vWaitingData;
         vWaitingData = clsString::Split(Line, Seperator);
-
+        if (vWaitingData.empty())
+        {
+            return Waiting("", "", "", "");
+        }
         return Waiting( vWaitingData[0], vWaitingData[1], vWaitingData[2],
             vWaitingData[3]);
 
@@ -95,6 +99,7 @@ class Waiting
 
             for (Waiting C : vWaiting)
             {
+                if (C.checkdel == false)
                 DataLine = _ConverWaitingObjectToLine(C);
                 MyFile << DataLine << endl;
 
@@ -143,7 +148,7 @@ public:
 
     string getWaitingDate()
     {
-        _WaitingDate;
+        return _WaitingDate;
     }
 
     string getCustomerId()
@@ -156,7 +161,7 @@ public:
         return _EventName;
     }
 
-    static Waiting Find(string id, string name)
+    static Waiting Findwait(string id, string name)
     {
 
 
@@ -186,14 +191,106 @@ public:
 
     static bool IsWaitingExit(string id, string name)
     {
-        Waiting waiting = Find(id, name);
+        Waiting waiting = Findwait(id, name);
         return waiting.getCustomerId() == id && waiting.getEventName() == name;
     }
 
-    static void AddCustomerToWaitingList(string id, string name)
+    static Waiting Findname(string name)
     {
 
+
+
+        fstream MyFile;
+        MyFile.open("Waiting.txt", ios::in);//read Mode
+
+        if (MyFile.is_open())
+        {
+            string Line;
+            while (getline(MyFile, Line))
+            {
+                Waiting waiting = _ConvertLinetoWaitingObject(Line);
+                if (waiting.getEventName() == name)
+                {
+                    MyFile.close();
+                    return waiting;
+                }
+
+            }
+
+            MyFile.close();
+
+        }
+        return Waiting("", "", "", "");
     }
+
+    static bool IsWaitingnameExit(string name)
+    {
+        Waiting waiting = Findname(name);
+        return waiting.getEventName() == name;
+    }
+
+    static Waiting FindId(string id)
+    {
+
+
+
+        fstream MyFile;
+        MyFile.open("Waiting.txt", ios::in);//read Mode
+
+        if (MyFile.is_open())
+        {
+            string Line;
+            while (getline(MyFile, Line))
+            {
+                Waiting waiting = _ConvertLinetoWaitingObject(Line);
+                if (waiting.getWaitingId() == id)
+                {
+                    MyFile.close();
+                    return waiting;
+                }
+
+            }
+
+            MyFile.close();
+
+        }
+        return Waiting("", "", "", "");
+    }
+
+    static bool IsWaitingIdExit(string id)
+    {
+        Waiting waiting = FindId(id);
+        return waiting.getWaitingId() == id;
+    }
+
+
+    static void AddCustomerToWaitingList(string id, string name)
+    {
+        Waiting waiting = Findname(name);
+        string word;
+
+        if (waiting.getEventName() != name)
+        {
+            random_device rd;
+            uniform_int_distribution<int> dist(4000000, 4999999);
+            word = to_string(dist(rd));
+
+            while (IsWaitingIdExit(word))
+            {
+                word = to_string(dist(rd));
+            }
+            waiting.setWaitingId(word);
+        }
+        waiting.setWaitingDate(clsInputValidate::Datetime());
+        waiting.setCustomerId(id);
+        waiting.setEventName(name);
+        waiting._AddDataLineToFile(_ConverWaitingObjectToLine(waiting));
+        cout << "\nwe have placed you on waiting list!" <<
+            "\npress any key to continuo...";
+        system("pause>0");
+    }
+
+
     
 };
 

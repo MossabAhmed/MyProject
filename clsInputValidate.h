@@ -1,8 +1,9 @@
-
+#pragma warning(disable : 4996)
 #pragma once
 #include <iostream>
 #include <string>
 #include "clsString.h"
+#include <ctime>
 
 class clsInputValidate
 {
@@ -104,6 +105,14 @@ public:
 			Number = ReadDblNumber();
 		}
 		return Number;
+	}
+
+	static string Datetime()
+	{
+		time_t now = time(0);
+		tm* t = localtime(&now);
+		string date = to_string(t->tm_mday) + '/' + to_string(t->tm_mon + 1) + '/' + to_string(t->tm_year + 1900);
+		return date;
 	}
 
 	static string ReadString()

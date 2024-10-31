@@ -374,14 +374,14 @@ class Booking : public Event, Seat
                 name = to_string(dist(rd));
             }
             booking.setBookingId(name);
-            clsDate date = clsDate::GetSystemDate();
-            name = date.GetDay() + '/' + date.GetMonth() + '/' + date.GetYear();
+            
+            name = clsInputValidate::Datetime();
             booking.setBookingDate(name);
             float price;
             switch (toupper(booking.getRow()))
             {
             case 'A':
-                price = event.getPrice() * (120 / 100);
+                price = event.getPrice() + (event.getPrice() / 100) * 20;
                 break;
             default:
                 price = event.getPrice();
