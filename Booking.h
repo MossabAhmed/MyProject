@@ -434,5 +434,10 @@ class Booking : public Event, Seat
 
         }
 
+        static void CancelBook(Customer customer)
+        {
+
+        }
+
 };
 

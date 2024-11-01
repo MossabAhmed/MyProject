@@ -118,7 +118,7 @@ void CustomerSystem(Customer customer)
 		break;
 	case 2:
 		system("cls");
-		Event::ModifyEvent();
+		
 		manageEvent();
 		break;
 	case 3:
