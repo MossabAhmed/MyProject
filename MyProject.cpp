@@ -123,8 +123,8 @@ void CustomerSystem(Customer customer)
 		break;
 	case 3:
 		system("cls");
-		Event::DeleteEvent();
-		manageEvent();
+		Booking::ShowBookingList(customer);
+		CustomerSystem(customer);
 		break;
 	default:
 		break;
