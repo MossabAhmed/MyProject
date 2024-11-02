@@ -338,6 +338,9 @@ class Booking : public Event, Seat
                 if (bl)
                 {
                     Waiting::AddCustomerToWaitingList(customer.getCustomerId(), name);
+                    cout << "\nwe have placed you on waiting list!" <<
+                        "\npress any key to continuo...";
+                    system("pause>0");
                     return;
                 }
                 else
@@ -434,9 +437,64 @@ class Booking : public Event, Seat
 
         }
 
+        static void delBooking(Booking book)
+        {
+            vector <Booking> vBooking = _LoadBookingDataFromFile();
+            for (Booking& C : vBooking)
+            {
+                if (C.getBookingId() == book.getBookingId())
+                {
+                    C._Statue = enStatueB::enCancel;
+                    _SaveBookingDataToFile(vBooking);
+                    return;
+                }
+            }
+        }
+
+        static void AddBook(Booking book, Waiting wait)
+        {
+            book.setBookingDate(wait.getWaitingDate());
+            book.setCustomerId(wait.getCustomerId());
+            book._AddDataLineToFile(_ConverBookingObjectToLine(book));
+        }
+
         static void CancelBook(Customer customer)
         {
-
+            cout << "========================================================\n";
+            cout << "Cancel Book.\n";
+            cout << "========================================================\n";
+            cout << "enter name of event? ";
+            string name = clsInputValidate::ReadString();
+            while (!Event::IsEventNameExist(name))
+            {
+                cout << "\nthis event not Exit , enter another name? ";
+                name = clsInputValidate::ReadString();
+            }
+            if (!IsBookingExit(customer.getCustomerId(), name) && !Waiting::IsWaitingExit(customer.getCustomerId(), name))
+            {
+                cout << "\nYou have not book...";
+                system("pause>0");
+                return;
+            }
+            Booking book = Find(customer.getCustomerId(), name);
+            Waiting wait = Waiting::Findwait(customer.getCustomerId(), name);
+            if (book.getEventName() == name)
+            {
+                delBooking(book);
+                wait = Waiting::Findname(name);
+                if (wait.getEventName() == name)
+                {
+                    AddBook(book, wait);
+                    Waiting::RemoveCustomerFromWaitingList(wait);
+                }
+            }
+            else
+            {
+                Waiting::RemoveCustomerFromWaitingList(wait);
+            }
+            cout << "\nRemove Successfuly!";
+            cout << "\nPress any key...";
+            system("pause>0");
         }
 
 };

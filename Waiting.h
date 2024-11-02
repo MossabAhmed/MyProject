@@ -285,9 +285,22 @@ public:
         waiting.setCustomerId(id);
         waiting.setEventName(name);
         waiting._AddDataLineToFile(_ConverWaitingObjectToLine(waiting));
-        cout << "\nwe have placed you on waiting list!" <<
-            "\npress any key to continuo...";
-        system("pause>0");
+        
+    }
+
+    static void RemoveCustomerFromWaitingList(Waiting wait)
+    {
+        vector <Waiting> vWait = _LoadWaitingDataFromFile();
+        for (Waiting& C : vWait)
+        {
+            if (wait.getCustomerId() == C.getCustomerId() && wait.getEventName() == C.getEventName())
+            {
+                C.checkdel = true;
+                _SaveWaitingDataToFile(vWait);
+                return;
+            }
+        }
+
     }
 
 

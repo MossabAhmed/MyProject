@@ -118,8 +118,8 @@ void CustomerSystem(Customer customer)
 		break;
 	case 2:
 		system("cls");
-		
-		manageEvent();
+		Booking::CancelBook(customer);
+		CustomerSystem(customer);
 		break;
 	case 3:
 		system("cls");
