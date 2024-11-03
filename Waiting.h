@@ -5,6 +5,7 @@
 #include <vector>
 #include <fstream>
 #include <iomanip>
+#include "Event.h"
 using namespace std;
 class Waiting
 {
@@ -318,9 +319,9 @@ public:
             static void ShowWaitingList(string id)
             {
                 vector <Waiting> vWait = _LoadWaitingDataFromFile();
-                cout << "\t==========================================\n";
-                cout << "\tWaiting List Screen" << endl;
-                cout << "\t==========================================\n";
+                cout << "\t\t\t\t==========================================\n";
+                cout << "\t\t\t\t\tWaiting List" << endl;
+                cout << "\t\t\t\t==========================================\n";
                 cout << setw(8) << left << "" << "\n\t_______________________________________________________";
                 cout << "_________________________________________\n" << endl;
 
@@ -334,7 +335,7 @@ public:
 
                 for (Waiting& C : vWait)
                 {
-                    if (C.getCustomerId() == id)
+                    if (C.getCustomerId() == id && Event::IsEventNameExist(C.getEventName()))
                     {
                         n++;
                         PrintWaitRecordLine(C);
@@ -343,7 +344,7 @@ public:
                 }
                 if (n == 0)
                 {
-                    cout << "\n\t\t\tNo Data to show!";
+                    cout << "\n\t\t\t\tNo Data to show!";
                 }
 
                 cout << setw(8) << left << "" << "\n\t_______________________________________________________";

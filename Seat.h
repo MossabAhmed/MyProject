@@ -12,7 +12,6 @@ class Seat
 	char _Row;
 	int _Culomn;
 	enType _Type;
-
 public:
 	Seat(char row, int culomn)
 	{
@@ -45,9 +44,6 @@ public:
 	{
 		return _Culomn;
 	}
-
-
-	
 
 };
 

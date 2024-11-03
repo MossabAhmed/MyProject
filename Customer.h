@@ -207,16 +207,16 @@ public:
         Customer customer(enStatue::enCustomer, "", "", "", "");
         while (IsCustomerNameExist(name))
         {
-            cout << "\nthis event already exit, enter another name: ";
+            cout << "\n\t\t\t\tthis event already exit, enter another name: ";
             name = clsInputValidate::ReadString();
         }
         customer.SetName(name);
 
-        cout << "\nenter your email? ";
+        cout << "\n\t\t\t\tenter your email? ";
         string word = clsInputValidate::ReadString();
         customer.SetEmail(word);
 
-        cout << "\nenter your phone? ";
+        cout << "\n\t\t\t\tenter your phone? ";
         word = clsInputValidate::ReadString();
         customer.SetPhone(word);
 

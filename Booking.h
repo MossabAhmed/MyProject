@@ -310,36 +310,35 @@ class Booking : public Event, Seat
 
         static void PurchaseTicket(Customer customer)
         {
-            cout << "========================================================\n";
-            cout << "Purchase Ticket\n";
-            cout << "========================================================\n";
-            cout << "enter name of event? ";
+            cout << "\n\n\t\t\t\t========================================================\n";
+            cout << "\t\t\t\tPurchase Ticket\n";
+            cout << "\t\t\t\t========================================================\n";
+            cout << "\t\t\t\tenter name of event? ";
             string name = clsInputValidate::ReadString();
             while (!Event::IsEventNameExist(name))
             {
-                cout << "\nthis event not Exit , enter another name? ";
+                cout << "\n\t\t\t\tthis event not Exit , enter another name? ";
                 name = clsInputValidate::ReadString();
             }
             Event event = Event::FindName(name);
 
             if (IsBookingExit(customer.getCustomerId(), name) || Waiting::IsWaitingExit(customer.getCustomerId(), name))
             {
-                cout << "\nYou already book this Event...";
+                cout << "\n\t\t\t\tYou already book this Event...";
                 system("pause>0");
                 return;
             }
-           
-            bool bl;
-            if (event.getTotalTickets() == 0)
+            char bl;
+            if (event.getTotalSeats() == 0)
             {
-                cout << "\nsorry, there are no tickets available for purchase!"<<
-                    "\nwould you like to be placed on a waiting list ? ";
+                cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!"<<
+                    "\n\t\t\t\twould you like to be placed on a waiting list ? Y/N? ";
                 cin >> bl;
-                if (bl)
+                if (toupper(bl) == 'Y')
                 {
                     Waiting::AddCustomerToWaitingList(customer.getCustomerId(), name);
-                    cout << "\nwe have placed you on waiting list!" <<
-                        "\npress any key to continuo...";
+                    cout << "\n\t\t\t\twe have placed you on waiting list!" <<
+                        "\n\t\t\t\tpress any key to continuo...";
                     system("pause>0");
                     return;
                 }
@@ -352,16 +351,16 @@ class Booking : public Event, Seat
 
             Booking booking("", "", "", "", 0.0, ' ', 0, enPayment::enBankCard, enStatueB::enActive);
 
-            cout << "\nenter row of seat? ";
+            cout << "\n\t\t\t\tenter row of seat? ";
             char ch;
             cin >> ch;
-            cout << "\nenter culom of seat? ";
+            cout << "\n\t\t\t\tenter culom of seat? ";
             int cu = clsInputValidate::ReadIntNumber();
             while (IsBookingSeatExit(name, ch, cu))
             {
-                cout << "\nthis Seat is reserved, enter row? ";
+                cout << "\n\t\t\t\tthis Seat is reserved, enter row? ";
                 cin >> ch;
-                cout << "\nenter culom of seat? ";
+                cout << "\n\t\t\t\tenter culom of seat? ";
                 cu = clsInputValidate::ReadIntNumber();
             }
 
@@ -393,7 +392,7 @@ class Booking : public Event, Seat
 
             booking.setTotalPrice(price);
             
-            cout << "\n choice Payment method? [1] BankCard, [2] Sadad, [3] Edfaly, [4] Tadawul, [5] Mobicash? ";
+            cout << "\n\t\t\t choice Payment method? [1] BankCard, [2] Sadad, [3] Edfaly, [4] Tadawul, [5] Mobicash? ";
             int choice = clsInputValidate::ReadIntNumber();
             switch (choice)
             {
@@ -418,9 +417,9 @@ class Booking : public Event, Seat
             booking.setCustomerId(customer.getCustomerId());
             booking.setEventName(event.getName());
             booking._AddDataLineToFile(_ConverBookingObjectToLine(booking));
-            int h = event.getTotalTickets();
+            int h = event.getTotalSeats();
             h--;
-            event.setTotalTickets(h);
+            event.setTotalSeats(h);
             vector <Event> vEvent = event._LoadEventDataFromFile();
             for (Event& C : vEvent)
             {
@@ -431,8 +430,8 @@ class Booking : public Event, Seat
                     break;
                 }
             }
-            cout << "\n Booking Done!";
-            cout << "\n press any key to continuo...";
+            cout << "\n\t\t\t\t Booking Done!";
+            cout << "\n\t\t\t\t press any key to continuo...";
             system("pause>0");
 
         }
@@ -460,19 +459,19 @@ class Booking : public Event, Seat
 
         static void CancelBook(Customer customer)
         {
-            cout << "========================================================\n";
-            cout << "Cancel Book.\n";
-            cout << "========================================================\n";
-            cout << "enter name of event? ";
+            cout << "\n\n\t\t\t\t========================================================\n";
+            cout << "\t\t\t\t\tCancel Book.\n";
+            cout << "\t\t\t\t========================================================\n";
+            cout << "\t\t\t\tenter name of event? ";
             string name = clsInputValidate::ReadString();
             while (!Event::IsEventNameExist(name))
             {
-                cout << "\nthis event not Exit , enter another name? ";
+                cout << "\n\t\t\t\tthis event not Exit , enter another name? ";
                 name = clsInputValidate::ReadString();
             }
             if (!IsBookingExit(customer.getCustomerId(), name) && !Waiting::IsWaitingExit(customer.getCustomerId(), name))
             {
-                cout << "\nYou have not book...";
+                cout << "\n\t\t\t\tYou have not book...";
                 system("pause>0");
                 return;
             }
@@ -492,67 +491,68 @@ class Booking : public Event, Seat
             {
                 Waiting::RemoveCustomerFromWaitingList(wait);
             }
-            cout << "\nRemove Successfuly!";
-            cout << "\nPress any key...";
+            cout << "\n\t\t\t\tRemove Successfuly!";
+            cout << "\n\t\t\t\tPress any key...";
             system("pause>0");
         }
 
      
-            static void PrintBookRecordLine(Booking book)
+        static void PrintBookRecordLine(Booking book)
+        {
+
+            cout << setw(8) << left << "" << "| " << setw(15) << left << book.getBookingId();
+            cout << "| " << setw(20) << left << book.getBookingDate();
+            cout << "| " << setw(12) << left << book.getEventName();
+            cout << "| " << setw(11) << left << book.getRow() + to_string(book.getCulomn());
+            cout << "| " << setw(15) << left << book.getPayment();
+            cout << "| " << setw(12) << left << book.getTotalPrice();
+
+        }
+
+
+        static void ShowBookingList(Customer customer)
+        {
+            vector <Booking> vBook = _LoadBookingDataFromFile();
+            cout << "\t\t\t\t==========================================\n";
+            cout << "\t\t\t\t\tBooking List for " << customer.GetName() << endl;
+            cout << "\t\t\t\t==========================================\n";
+            cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+            cout << "_________________________________________\n" << endl;
+
+            cout << setw(8) << left << "" << "| " << left << setw(15) << "ID";
+            cout << "| " << left << setw(20) << "Date";
+            cout << "| " << left << setw(12) << "Event Name";
+            cout << "| " << left << setw(11) << "Seat Number";
+            cout << "| " << left << setw(15) << "Payment Method";
+            cout << "| " << left << setw(12) << "Price";
+            cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+            cout << "_________________________________________\n" << endl;
+
+            int n = 0;
+
+            for (Booking& C : vBook)
             {
-
-                cout << setw(8) << left << "" << "| " << setw(15) << left << book.getBookingId();
-                cout << "| " << setw(20) << left << book.getBookingDate();
-                cout << "| " << setw(12) << left << book.getEventName();
-                cout << "| " << setw(11) << left << book.getRow() + to_string(book.getCulomn());
-                cout << "| " << setw(15) << left << book.getPayment();
-                cout << "| " << setw(12) << left << book.getTotalPrice();
-
+                if (C.getCustomerId() == customer.getCustomerId() && Event::IsEventNameExist(C.getEventName()))
+                {
+                    n++;
+                    PrintBookRecordLine(C);
+                    cout << endl;
+                }
+            }
+            if (n == 0)
+            {
+                cout << "\n\t\t\t\tNo book to show!";
             }
 
-        public:
-
-
-            static void ShowBookingList(Customer customer)
-            {
-                vector <Booking> vBook = _LoadBookingDataFromFile();
-                cout << "\t==========================================\n";
-                cout << "\tBooking List Screen for " << customer.GetName() << endl;
-                cout << "\t==========================================\n";
-                cout << setw(8) << left << "" << "\n\t_______________________________________________________";
-                cout << "_________________________________________\n" << endl;
-
-                cout << setw(8) << left << "" << "| " << left << setw(15) << "Bookin ID";
-                cout << "| " << left << setw(20) << "Booking Date";
-                cout << "| " << left << setw(12) << "Event Name";
-                cout << "| " << left << setw(11) << "Seat Number";
-                cout << "| " << left << setw(15) << "Payment Method";
-                cout << "| " << left << setw(12) << "Price";
-                cout << setw(8) << left << "" << "\n\t_______________________________________________________";
-                cout << "_________________________________________\n" << endl;
-
-                int n = 0;
-
-                for (Booking& C : vBook)
-                {
-                    if (C.getCustomerId() == customer.getCustomerId())
-                    {
-                        n++;
-                        PrintBookRecordLine(C);
-                        cout << endl;
-                    }
-                }
-                if (n == 0)
-                {
-                    cout << "\n\t\t\tNo book to show!";
-                }
-
-                cout << setw(8) << left << "" << "\n\t_______________________________________________________";
-                cout << "_________________________________________\n" << endl;
-                Waiting::ShowWaitingList(customer.getCustomerId());
-                cout << "\n\tpress any key...";
-                system("pause>0");
-            }
-
+            cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+            cout << "_________________________________________\n" << endl;
+            Waiting::ShowWaitingList(customer.getCustomerId());
+            cout << "\n\t\t\t\tpress any key...";
+            system("pause>0");
+        }
+        static void ShowEvents()
+        {
+            Event::ShowEventList();
+        }
 };
 

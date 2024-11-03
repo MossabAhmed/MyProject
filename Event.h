@@ -10,14 +10,12 @@ using namespace std;
 
 class Event 
 {
-
 	string _EventType;
 	string _Name;
 	string _Location;
 	string _TimeDate;
 	string _EventId;
 	float _Price;
-	int _TotalTickets;
 	int _TotalSeats;
 	bool checkdel = false;
 
@@ -27,7 +25,7 @@ class Event
 		vEventData = clsString::Split(Line, Seperator);
 
 		return Event(vEventData[0], vEventData[1], vEventData[2],
-			vEventData[3], vEventData[4], stod(vEventData[5]),stoi(vEventData[6]), stoi(vEventData[7]));
+			vEventData[3], vEventData[4], stod(vEventData[5]),stoi(vEventData[6]));
 
 	}
 
@@ -41,7 +39,6 @@ class Event
 		stEventRecord += event.getDate() + Seperator;
 		stEventRecord += event.getEventId() + Seperator;
 		stEventRecord += to_string(event.getPrice()) + Seperator;
-		stEventRecord += to_string(event.getTotalTickets()) + Seperator;
 		stEventRecord += to_string(event.getTotalSeats());
 
 		return stEventRecord;
@@ -68,7 +65,7 @@ class Event
 
 public:
 
-	Event(string eventType, string name, string location, string date, string eventId, float price, int totalTickets, int totalSeats)
+	Event(string eventType, string name, string location, string date, string eventId, float price, int totalSeats)
 	{
 		_EventType = eventType;
 		_Name = name;
@@ -76,7 +73,6 @@ public:
 		_TimeDate = date;
 		_EventId = eventId;
 		_Price = price;
-		_TotalTickets = totalTickets;
 		_TotalSeats = totalSeats;
 	}
 
@@ -204,15 +200,7 @@ public:
 		return _TimeDate;
 	}
 
-	void setTotalTickets(int totalTickets)
-	{
-		_TotalTickets = totalTickets;
-	}
-
-	int getTotalTickets()
-	{
-		return _TotalTickets;
-	}
+	
 
 	void setTotalSeats(int totalSeats)
 	{
@@ -249,7 +237,7 @@ public:
 			MyFile.close();
 
 		}
-		return Event("", "", "", "", "", 0.0, 0, 0 );
+		return Event("", "", "", "", "", 0.0 , 0);
 	}
 
 	static bool IsEventNameExist(string name)
@@ -285,7 +273,7 @@ public:
 			MyFile.close();
 
 		}
-		return Event("", "", "", "", "", 0.0, 0, 0);
+		return Event("", "", "", "", "", 0.0, 0);
 	}
 
 	static bool IsEventIdExist(string eventId)
@@ -298,28 +286,28 @@ public:
 
 	static void AddEvent()
 	{
-		cout << "========================================================\n";
-		cout << "Add Event\n";
-		cout << "========================================================\n";
-		cout << "enter name of event? ";
+		cout << "\n\n\t\t\t\t========================================================\n";
+		cout << "\t\t\t\t\tAdd Event\n";
+		cout << "\t\t\t\t========================================================\n";
+		cout << "\t\t\t\tenter name of event? ";
 		string name = clsInputValidate::ReadString();
 		while (Event::IsEventNameExist(name))
 		{
-			cout << "\nthis event already exit, enter another name: ";
+			cout << "\n\t\t\t\tthis event already exit, enter another name: ";
 			name = clsInputValidate::ReadString();
 		}
-		Event event("", "", "", "", "", 0.0, 0, 0);
+		Event event("", "", "", "", "", 0.0, 0);
 		event.setName(name);
 
-		cout << "\nenter type of event? ";
+		cout << "\n\t\t\t\tenter type of event? ";
 		name = clsInputValidate::ReadString();
         event.setEventType(name);
 
-		cout << "\nenter location of event? ";
+		cout << "\n\t\t\t\tenter location of event? ";
 		name = clsInputValidate::ReadString();
 		event.setLocation(name);
 
-		cout << "\nenter date of event? ";
+		cout << "\n\t\t\t\tenter date of event? ";
 		name = clsInputValidate::ReadString();
 		event.setDate(name);
 
@@ -334,59 +322,51 @@ public:
 		}
 		event.setEventId(name);
 
-		cout << "enter price? ";
+		cout << "\t\t\t\tenter price? ";
 		float price = clsInputValidate::ReadDblNumber();
 		event.setPrice(price);
 
-		cout << "enter total tickets? ";
+		cout << "\t\t\t\tenter total seats? ";
 		int total = clsInputValidate::ReadIntNumber();
-		event.setTotalTickets(total);
-
-		cout << "enter total seats? ";
-		total = clsInputValidate::ReadIntNumber();
 		event.setTotalSeats(total);
 
 		event._AddDataLineToFile(_ConverEventObjectToLine(event));
-		cout << "\nAdd Successfully!";
-		cout << "\npress any key to continuo...";
+		cout << "\n\t\t\t\tAdd Successfully!";
+		cout << "\n\t\t\t\tpress any key to continuo...";
 		system("pause>0");
 	}
 
 	static void  modify(Event& event)
 	{
 		string name;
-		cout << "enter location of event? ";
+		cout << "\t\t\t\tenter location of event? ";
 		name = clsInputValidate::ReadString();
 		event.setLocation(name);
 
-		cout << "enter date of event? ";
+		cout << "\t\t\t\tenter date of event? ";
 		name = clsInputValidate::ReadString();
 		event.setDate(name);
 
-		cout << "enter price? ";
+		cout << "\t\t\t\tenter price? ";
 		float price = clsInputValidate::ReadDblNumber();
 		event.setPrice(price);
 
-		cout << "enter total tickets? ";
+		cout << "\t\t\t\tenter total Seats? ";
 		int total = clsInputValidate::ReadIntNumber();
-		event.setTotalTickets(total);
-
-		cout << "enter total Seats? ";
-		total = clsInputValidate::ReadIntNumber();
 		event.setTotalSeats(total);
 	}
 
 	static void ModifyEvent()
 	{
-		cout << "========================================================\n";
-		cout << "Modify Event\n";
-		cout << "========================================================\n";
-		cout << "enter name of event? ";
+		cout << "\n\n\t\t\t\t========================================================\n";
+		cout << "\t\t\t\t\tModify Event\n";
+		cout << "\t\t\t\t========================================================\n";
+		cout << "\t\t\t\tenter name of event? ";
 		string name = clsInputValidate::ReadString();
 
 		while (!Event::IsEventNameExist(name))
 		{
-			cout << "\nthis event not exit, enter another name: ";
+			cout << "\n\t\t\t\tthis event not exit, enter another name: ";
 			name = clsInputValidate::ReadString();
 		}
 
@@ -403,36 +383,36 @@ public:
 			}
 		}
 
-		cout << "\nModify Successfuly!";
-		cout << "\npress any key to continuo...";
+		cout << "\n\t\t\t\tModify Successfuly!";
+		cout << "\n\t\t\t\tpress any key to continuo...";
 		system("pause>0");
         
 	}
 
 	static void DeleteEvent()
 	{
-		cout << "========================================================\n";
-		cout << "Delete Event\n";
-		cout << "========================================================\n";
-		cout << "enter name of event? ";
+		cout << "\n\n\t\t\t\t========================================================\n";
+		cout << "\t\t\t\t\tDelete Event\n";
+		cout << "\t\t\t\t========================================================\n";
+		cout << "\t\t\t\tenter name of event? ";
 		string name = clsInputValidate::ReadString();
 
 		while (!Event::IsEventNameExist(name))
 		{
-			cout << "\nthis event not exit, enter another name: ";
+			cout << "\n\t\t\t\tthis event not exit, enter another name: ";
 			name = clsInputValidate::ReadString();
 		}
 
 		vector <Event> vEvent = _LoadEventDataFromFile();
-		bool bl = false;
+		char bl;
 
 		for (Event& C : vEvent)
 		{
 			if (C.getName() == name)
 			{
-				cout << "\nAre you sure you want to delete this event? ";
+				cout << "\n\t\t\t\tAre you sure you want to delete this event? Y/N? ";
 				cin >> bl;
-				if (bl)
+				if (toupper(bl) == 'Y')
 				{
 					C.checkdel = true;
 					_SaveEventsDataToFile(vEvent);
@@ -443,9 +423,58 @@ public:
 
 			}
 		}
-		cout << "\nDelete Successfully!";
-		cout << "\npress any key to continuo...";
+		cout << "\n\t\t\t\tDelete Successfully!";
+		cout << "\n\t\t\t\tpress any key to continuo...";
 		system("pause>0");
 	}
+	static void PrintEventRecordLine(Event event)
+	{
 
+		cout << setw(8) << left << "" << "| " << setw(10) << left << event.getEventId();
+		cout << "| " << setw(11) << left << event.getDate();
+		cout << "| " << setw(15) << left << event.getName();
+		cout << "| " << setw(12) << left << event.getLocation();
+		cout << "| " << setw(15) << left << event.getEventType();
+		cout << "| " << setw(12) << left << event.getTotalSeats();
+		cout << "| " << setw(12) << left << event.getPrice();
+
+	}
+
+
+	static void ShowEventList()
+	{
+		vector <Event> vEvent = _LoadEventDataFromFile();
+		cout << "\t\t\t\t\==========================================\n";
+		cout << "\t\t\t\t\tEvent List" <<endl;
+		cout << "\t\t\t\t==========================================\n";
+		cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+		cout << "_________________________________________\n" << endl;
+
+		cout << setw(8) << left << "" << "| " << left << setw(10) << "ID";
+		cout << "| " << left << setw(11) << "Date";
+		cout << "| " << left << setw(15) << "Name";
+		cout << "| " << left << setw(12) << "Location";
+		cout << "| " << left << setw(15) << "Type";
+		cout << "| " << left << setw(12) << "Seat Number";
+		cout << "| " << left << setw(12) << "Price";
+		cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+		cout << "_________________________________________\n" << endl;
+
+		if (!vEvent.empty())
+		{
+			for (Event& C : vEvent)
+			{
+
+				PrintEventRecordLine(C);
+				cout << endl;
+			}
+		}
+		else
+			cout << "\n\t\t\t\tNo Event to show!";
+
+		cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+		cout << "_________________________________________\n" << endl;
+		cout << "\n\t\t\t\tpress any key...";
+		system("pause>0");
+	}
 };
