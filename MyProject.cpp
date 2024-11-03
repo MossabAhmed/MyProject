@@ -12,31 +12,30 @@
 #include "Event.h"
 using namespace std;
 
-Customer customergen(enStatue::enCustomer, "", "", "", "");
-
 void manageEvent()
 {
-
+	
 	system("cls");
-	cout << "========================================================\n";
-	cout << "Login\n";
-	cout << "========================================================\n";
-	cout << "[1] Add Event.\n";
-	cout << "[2] Modify Event.\n";
-	cout << "[3] Delete Event.\n";
-	cout << "[4] End Program.\n";
-	cout << "========================================================\n";
-	cout << "enter number from [1] to [4]? ";
+	cout << "\n\n\t\t\t\t========================================================\n";
+	cout << "\t\t\t\t\tManage Event\n";
+	cout << "\t\t\t\t========================================================\n";
+	cout << "\t\t\t\t[1] Add Event.\n";
+	cout << "\t\t\t\t[2] Modify Event.\n";
+	cout << "\t\t\t\t[3] Delete Event.\n";
+	cout << "\t\t\t\t[4] Show All Event.\n";
+	cout << "\t\t\t\t[5] End Program.\n";
+	cout << "\t\t\t\t========================================================\n";
+	cout << "\t\t\t\tenter number from [1] to [5]? ";
 	int choice ;
 	try
 	{
 		choice = clsInputValidate::ReadIntNumber();
-		if (choice < 1 || choice > 4)
+		if (choice < 1 || choice > 5)
 			throw "error";
 	}
 	catch (...)
 	{
-		cout << "\nerror, press any key to replay enter...";
+		cout << "\n\t\t\t\terror, press any key to replay enter...";
 		system("pause>0");
 		manageEvent();
 	}
@@ -58,6 +57,11 @@ void manageEvent()
 		Event::DeleteEvent();
 		manageEvent();
 		break;
+	case 4:
+		system("cls");
+		Event::ShowEventList();
+		manageEvent();
+		break;
 	default:
 		break;
 	}
@@ -68,15 +72,17 @@ void manageEvent()
 void AdminSystem(string name)
 {
 	string password;
+	string message = "";
 	do
 	{
 		system("cls");
-		cout << "========================================================\n";
-		cout << "Admin System\n";
-		cout << "========================================================\n";
-		cout << "enter password? ";
+		cout << "\n\n\t\t\t\t========================================================\n";
+		cout << "\t\t\t\t\tAdmin System\n";
+		cout << "\t\t\t\t========================================================\n";
+		cout << "\t\t\t\t" << message << endl;
+		cout << "\t\t\t\tenter password? ";
 		password = clsInputValidate::ReadString();
-		
+		message = "The password is incorrect. Please try again.";
 	} while (!Admin::IsAdminExist(name, password));
 
 	manageEvent();
@@ -86,25 +92,26 @@ void AdminSystem(string name)
 void CustomerSystem(Customer customer)
 {
 	system("cls");
-	cout << "========================================================\n";
-	cout << "Customer Interface.\n";
-	cout << "========================================================\n";
-	cout << "[1] Purchase Ticket.\n";
-	cout << "[2] Cancel Booking.\n";
-	cout << "[3] Show All Bookings.\n";
-	cout << "[4] End Program.\n";
-	cout << "========================================================\n";
-	cout << "enter number from [1] to [4]? ";
+	cout << "\n\n\t\t\t\t========================================================\n";
+	cout << "\t\t\t\t\tCustomer Interface.\n";
+	cout << "\t\t\t\t========================================================\n";
+	cout << "\t\t\t\t[1] Purchase Ticket.\n";
+	cout << "\t\t\t\t[2] Cancel Booking.\n";
+	cout << "\t\t\t\t[3] Show All Bookings.\n";
+	cout << "\t\t\t\t[4] Show All Events.\n";
+	cout << "\t\t\t\t[5] End Program.\n";
+	cout << "\t\t\t\t========================================================\n";
+	cout << "\t\t\t\tenter number from [1] to [5]? ";
 	int choice;
 	try
 	{
 		choice = clsInputValidate::ReadIntNumber();
-		if (choice < 1 || choice > 4)
+		if (choice < 1 || choice > 5)
 			throw "error";
 	}
 	catch (...)
 	{
-		cout << "\nerror, press any key to replay enter...";
+		cout << "\n\t\t\t\terror, press any key to replay enter...";
 		system("pause>0");
 		CustomerSystem(customer);
 	}
@@ -126,6 +133,11 @@ void CustomerSystem(Customer customer)
 		Booking::ShowBookingList(customer);
 		CustomerSystem(customer);
 		break;
+	case 4:
+		system("cls");
+		Booking::ShowEvents();
+		CustomerSystem(customer);
+		break;
 	default:
 		break;
 	}
@@ -135,10 +147,10 @@ void CustomerSystem(Customer customer)
 void CreateCustomer()
 {
 	system("cls");
-	cout << "========================================================\n";
-	cout << "Create New User.\n";
-	cout << "========================================================\n";
-	cout << "enter name? ";
+	cout << "\n\n\t\t\t\t========================================================\n";
+	cout << "\t\t\t\t\tCreate New User.\n";
+	cout << "\t\t\t\t========================================================\n";
+	cout << "\t\t\t\tenter name? ";
 	string name = clsInputValidate::ReadString();
 	Customer::AddCustomer(name);
 	CustomerSystem(Customer::FindName(name));
@@ -147,23 +159,23 @@ void CreateCustomer()
 void BookingSystem()
 {
 	system("cls");
-	cout << "========================================================\n";
-	cout << "Booking Ticket Event\n";
-	cout << "========================================================\n";
-	cout << "Are You New User? ";
-	bool bl;
+	cout << "\n\n\t\t\t\t========================================================\n";
+	cout << "\t\t\t\t\tBooking Ticket Event\n";
+	cout << "\t\t\t\t========================================================\n";
+	cout << "\t\t\t\tAre You New User? Y/N? ";
+	char bl;
 	cin >> bl;
-	if (bl)
+	if (toupper(bl) == 'Y')
 	{
 		CreateCustomer();
 		return;
 	}
 
-	cout << "\nenter username?  ";
+	cout << "\n\t\t\t\tenter username?  ";
 	string name = clsInputValidate::ReadString();
 	while (!Admin::IsAdminExist(name) && !Customer::IsCustomerNameExist(name))
 	{
-		cout << "\nthis Username is not exit, enter another username? ";
+		cout << "\n\t\t\t\tthis Username is not exit, enter another username? ";
         name = clsInputValidate::ReadString();
 
 	}

@@ -125,319 +125,322 @@ class Booking : public Event, Seat
 
     }
 
-    public:
-        Booking(string bookingId, string bookingDate, string customerId, string name, float price, char row, int culomn, enPayment payment, enStatueB statue) :
-            Seat(row, culomn)
-        {
-            _BookingId = bookingId;
-            _BookingDate = bookingDate;
-            _CustomerId = customerId;
-            _NameEvent = name;
-            _TotalPrice = price;
-            _Payment = payment;
-            _Statue = statue;
-        }
+ public:
+     Booking(string bookingId, string bookingDate, string customerId, string name, float price, char row, int culomn, enPayment payment, enStatueB statue) :
+         Seat(row, culomn)
+     {
+         _BookingId = bookingId;
+         _BookingDate = bookingDate;
+         _CustomerId = customerId;
+         _NameEvent = name;
+         _TotalPrice = price;
+         _Payment = payment;
+         _Statue = statue;
+     }
 
-        Booking(){}
+     Booking(){}
 
-        void setBookingId(string bookingId)
-        {
-            _BookingId = bookingId;
-        }
-       
-        void setBookingDate(string bookingDate)
-        {
-            _BookingDate = bookingDate;
-        }
-
-        void setCustomerId(string customerId)
-        {
-            _CustomerId = customerId;
-        }
-        void setEventName(string name)
-        {
-            _NameEvent = name;
-        }
-
-        void setTotalPrice(float total)
-        {
-            _TotalPrice = total;
-        }
-        
-        string getBookingId()
+     void setBookingId(string bookingId)
+     {
+         _BookingId = bookingId;
+     }
+     
+     void setBookingDate(string bookingDate)
+  {
+      _BookingDate = bookingDate;
+  }
+     
+     void setCustomerId(string customerId)
+  {
+      _CustomerId = customerId;
+  }
+     
+     void setEventName(string name)
+  {
+      _NameEvent = name;
+  }
+     
+     void setTotalPrice(float total)
+  {
+      _TotalPrice = total;
+  }
+     
+     string getBookingId()
         {
             return _BookingId;
         }
-
-        string getBookingDate()
+     
+     string getBookingDate()
         {
             return _BookingDate;
         }
-
-        string getCustomerId()
-        {
-            return _CustomerId;
-        }
-
-        string getEventName()
+     
+     string getCustomerId()
+  {
+      return _CustomerId;
+  }
+     
+     string getEventName()
         {
             return _NameEvent;
         }
-
-        float getTotalPrice()
-        {
-            return _TotalPrice;
-        }
-        void setPayment(enPayment statue)
-        {
-            _Payment = statue;
-        }
-        string getPayment()
+     
+     float getTotalPrice()
+  {
+      return _TotalPrice;
+  }
+     
+     void setPayment(enPayment statue)
+  {
+      _Payment = statue;
+  }
+     
+     string getPayment()
         {
             return (_Payment == enPayment::enBankCard ? "BankCard" : (_Payment == enPayment::enSadad ? "Sadad" : 
                 (_Payment == enPayment::enEdfaly ? "Edfaly" :
                 (_Payment == enPayment::enTadawul ? "Tadawul" : "MobiCash"))));
         }
-
-        void setStatue(enStatueB statue)
-        {
-            _Statue = statue;
-        }
-
-        string getStatue()
-        {
-            return (_Statue == enStatueB::enActive ? "Active" : (_Statue == enStatueB::enWaiting ? "Waiting" : "Cancel"));
-        }
-
-        static Booking Find(string id, string name)
-        {
-
-
-
-            fstream MyFile;
-            MyFile.open("Booking.txt", ios::in);//read Mode
-
-            if (MyFile.is_open())
-            {
-                string Line;
-                while (getline(MyFile, Line))
-                {
-                    Booking booking = _ConvertLinetoBookingObject(Line);
-                    if (booking.getCustomerId() == id && booking.getEventName() == name)
-                    {
-                        MyFile.close();
-                        return booking;
-                    }
-
-                }
-
-                MyFile.close();
-
-            }
-            return Booking("", "", "", "", 0.0, ' ', 0, enPayment::enBankCard, enStatueB::enActive);
-        }
-
-        static bool IsBookingExit(string id, string name)
-        {
-            Booking booking = Find(id, name);
-            return (booking.getCustomerId() == id && booking.getEventName() == name);
-        }
-
-        static Booking FindId(string id)
-        {
+     
+     void setStatue(enStatueB statue)
+  {
+      _Statue = statue;
+  }
+     
+     string getStatue()
+  {
+      return (_Statue == enStatueB::enActive ? "Active" : (_Statue == enStatueB::enWaiting ? "Waiting" : "Cancel"));
+  }
+     
+     static Booking Find(string id, string name)
+  {
 
 
 
-            fstream MyFile;
-            MyFile.open("Booking.txt", ios::in);//read Mode
+      fstream MyFile;
+      MyFile.open("Booking.txt", ios::in);//read Mode
 
-            if (MyFile.is_open())
-            {
-                string Line;
-                while (getline(MyFile, Line))
-                {
-                    Booking booking = _ConvertLinetoBookingObject(Line);
-                    if (booking.getBookingId() == id)
-                    {
-                        MyFile.close();
-                        return booking;
-                    }
+      if (MyFile.is_open())
+      {
+          string Line;
+          while (getline(MyFile, Line))
+          {
+              Booking booking = _ConvertLinetoBookingObject(Line);
+              if (booking.getCustomerId() == id && booking.getEventName() == name)
+              {
+                  MyFile.close();
+                  return booking;
+              }
 
-                }
+          }
 
-                MyFile.close();
+          MyFile.close();
 
-            }
-            return Booking("", "", "", "", 0.0, ' ', 0, enPayment::enBankCard, enStatueB::enActive);
-        }
+      }
+      return Booking("", "", "", "", 0.0, ' ', 0, enPayment::enBankCard, enStatueB::enActive);
+  }
+     
+     static bool IsBookingExit(string id, string name)
+  {
+      Booking booking = Find(id, name);
+      return (booking.getCustomerId() == id && booking.getEventName() == name);
+  }
+     
+     static Booking FindId(string id)
+  {
 
-        static bool IsBookingIdExit(string id)
-        {
-            Booking booking = FindId(id);
-            return (booking.getBookingId() == id);
-        }
 
-        static Booking FindSeat(string name, char ch, int cu)
-        {
-            fstream MyFile;
-            MyFile.open("Booking.txt", ios::in);//read Mode
 
-            if (MyFile.is_open())
-            {
-                string Line;
-                while (getline(MyFile, Line))
-                {
-                    Booking booking = _ConvertLinetoBookingObject(Line);
-                    if (booking.getEventName() == name && booking.getRow() == ch && booking.getCulomn() == cu)
-                    {
-                        MyFile.close();
-                        return booking;
-                    }
+      fstream MyFile;
+      MyFile.open("Booking.txt", ios::in);//read Mode
 
-                }
+      if (MyFile.is_open())
+      {
+          string Line;
+          while (getline(MyFile, Line))
+          {
+              Booking booking = _ConvertLinetoBookingObject(Line);
+              if (booking.getBookingId() == id)
+              {
+                  MyFile.close();
+                  return booking;
+              }
 
-                MyFile.close();
+          }
 
-            }
-            return Booking("", "", "", "", 0.0, ' ', 0, enPayment::enBankCard, enStatueB::enActive);
-        }
+          MyFile.close();
 
-        static bool IsBookingSeatExit(string name, char ch, int cu)
+      }
+      return Booking("", "", "", "", 0.0, ' ', 0, enPayment::enBankCard, enStatueB::enActive);
+  }
+     
+     static bool IsBookingIdExit(string id)
+  {
+      Booking booking = FindId(id);
+      return (booking.getBookingId() == id);
+  }
+     
+     static Booking FindSeat(string name, char ch, int cu)
+  {
+      fstream MyFile;
+      MyFile.open("Booking.txt", ios::in);//read Mode
+
+      if (MyFile.is_open())
+      {
+          string Line;
+          while (getline(MyFile, Line))
+          {
+              Booking booking = _ConvertLinetoBookingObject(Line);
+              if (booking.getEventName() == name && booking.getRow() == ch && booking.getCulomn() == cu)
+              {
+                  MyFile.close();
+                  return booking;
+              }
+
+          }
+
+          MyFile.close();
+
+      }
+      return Booking("", "", "", "", 0.0, ' ', 0, enPayment::enBankCard, enStatueB::enActive);
+  }
+     
+     static bool IsBookingSeatExit(string name, char ch, int cu)
         {
             Booking booking = FindSeat(name, ch, cu);
             return (booking.getEventName() == name && booking.getRow() == ch && booking.getCulomn() == cu);
         }
+     
+     static void PurchaseTicket(Customer customer)
+  {
+      cout << "\n\n\t\t\t\t========================================================\n";
+      cout << "\t\t\t\tPurchase Ticket\n";
+      cout << "\t\t\t\t========================================================\n";
+      cout << "\t\t\t\tenter name of event? ";
+      string name = clsInputValidate::ReadString();
+      while (!Event::IsEventNameExist(name))
+      {
+          cout << "\n\t\t\t\tthis event not Exit , enter another name? ";
+          name = clsInputValidate::ReadString();
+      }
+      Event event = Event::FindName(name);
 
-        static void PurchaseTicket(Customer customer)
-        {
-            cout << "========================================================\n";
-            cout << "Purchase Ticket\n";
-            cout << "========================================================\n";
-            cout << "enter name of event? ";
-            string name = clsInputValidate::ReadString();
-            while (!Event::IsEventNameExist(name))
-            {
-                cout << "\nthis event not Exit , enter another name? ";
-                name = clsInputValidate::ReadString();
-            }
-            Event event = Event::FindName(name);
+      if (IsBookingExit(customer.getCustomerId(), name) || Waiting::IsWaitingExit(customer.getCustomerId(), name))
+      {
+          cout << "\n\t\t\t\tYou already book this Event...";
+          system("pause>0");
+          return;
+      }
+     
+      char bl;
+      if (event.getTotalSeats() == 0)
+      {
+          cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!"<<
+              "\n\t\t\t\twould you like to be placed on a waiting list ? Y/N? ";
+          cin >> bl;
+          if (toupper(bl) == 'Y')
+          {
+              Waiting::AddCustomerToWaitingList(customer.getCustomerId(), name);
+              cout << "\n\t\t\t\twe have placed you on waiting list!" <<
+                  "\n\t\t\t\tpress any key to continuo...";
+              system("pause>0");
+              return;
+          }
+          else
+          {
+              return;
+          }
 
-            if (IsBookingExit(customer.getCustomerId(), name) || Waiting::IsWaitingExit(customer.getCustomerId(), name))
-            {
-                cout << "\nYou already book this Event...";
-                system("pause>0");
-                return;
-            }
-           
-            bool bl;
-            if (event.getTotalTickets() == 0)
-            {
-                cout << "\nsorry, there are no tickets available for purchase!"<<
-                    "\nwould you like to be placed on a waiting list ? ";
-                cin >> bl;
-                if (bl)
-                {
-                    Waiting::AddCustomerToWaitingList(customer.getCustomerId(), name);
-                    cout << "\nwe have placed you on waiting list!" <<
-                        "\npress any key to continuo...";
-                    system("pause>0");
-                    return;
-                }
-                else
-                {
-                    return;
-                }
+      }
 
-            }
+      Booking booking("", "", "", "", 0.0, ' ', 0, enPayment::enBankCard, enStatueB::enActive);
 
-            Booking booking("", "", "", "", 0.0, ' ', 0, enPayment::enBankCard, enStatueB::enActive);
+      cout << "\n\t\t\t\tenter row of seat? ";
+      char ch;
+      cin >> ch;
+      cout << "\n\t\t\t\tenter culom of seat? ";
+      int cu = clsInputValidate::ReadIntNumber();
+      while (IsBookingSeatExit(name, ch, cu))
+      {
+          cout << "\n\t\t\t\tthis Seat is reserved, enter row? ";
+          cin >> ch;
+          cout << "\n\t\t\t\tenter culom of seat? ";
+          cu = clsInputValidate::ReadIntNumber();
+      }
 
-            cout << "\nenter row of seat? ";
-            char ch;
-            cin >> ch;
-            cout << "\nenter culom of seat? ";
-            int cu = clsInputValidate::ReadIntNumber();
-            while (IsBookingSeatExit(name, ch, cu))
-            {
-                cout << "\nthis Seat is reserved, enter row? ";
-                cin >> ch;
-                cout << "\nenter culom of seat? ";
-                cu = clsInputValidate::ReadIntNumber();
-            }
+      booking.setRow(ch);
+      booking.setCulomn(cu);
 
-            booking.setRow(ch);
-            booking.setCulomn(cu);
+      random_device rd;
+      uniform_int_distribution<int> dist(3000000, 3999999);
+      name = to_string(dist(rd));
 
-            random_device rd;
-            uniform_int_distribution<int> dist(3000000, 3999999);
-            name = to_string(dist(rd));
+      while (IsBookingIdExit(name))
+      {
+          name = to_string(dist(rd));
+      }
+      booking.setBookingId(name);
+      
+      name = clsInputValidate::Datetime();
+      booking.setBookingDate(name);
+      float price;
+      switch (toupper(booking.getRow()))
+      {
+      case 'A':
+          price = event.getPrice() + (event.getPrice() / 100) * 20;
+          break;
+      default:
+          price = event.getPrice();
+          break;
+      }
 
-            while (IsBookingIdExit(name))
-            {
-                name = to_string(dist(rd));
-            }
-            booking.setBookingId(name);
-            
-            name = clsInputValidate::Datetime();
-            booking.setBookingDate(name);
-            float price;
-            switch (toupper(booking.getRow()))
-            {
-            case 'A':
-                price = event.getPrice() + (event.getPrice() / 100) * 20;
-                break;
-            default:
-                price = event.getPrice();
-                break;
-            }
+      booking.setTotalPrice(price);
+      
+      cout << "\n\t\t\t choice Payment method? [1] BankCard, [2] Sadad, [3] Edfaly, [4] Tadawul, [5] Mobicash? ";
+      int choice = clsInputValidate::ReadIntNumber();
+      switch (choice)
+      {
+      case enBankCard:
+          booking.setPayment(enBankCard);
+          break;
+      case enSadad:
+          booking.setPayment(enSadad);
+          break;
+      case enEdfaly:
+          booking.setPayment(enEdfaly);
+          break;
+      case enTadawul:
+          booking.setPayment(enTadawul);
+          break;
+      case enMobicach:
+          booking.setPayment(enMobicach);
+          break;
+      default:
+          return;
+      }
+      booking.setCustomerId(customer.getCustomerId());
+      booking.setEventName(event.getName());
+      booking._AddDataLineToFile(_ConverBookingObjectToLine(booking));
+      int h = event.getTotalSeats();
+      h--;
+      event.setTotalSeats(h);
+      vector <Event> vEvent = event._LoadEventDataFromFile();
+      for (Event& C : vEvent)
+      {
+          if (C.getName() == event.getName())
+          {
+              C = event;
+              event._SaveEventsDataToFile(vEvent);
+              break;
+          }
+      }
+      cout << "\n\t\t\t\t Booking Done!";
+      cout << "\n\t\t\t\t press any key to continuo...";
+      system("pause>0");
 
-            booking.setTotalPrice(price);
-            
-            cout << "\n choice Payment method? [1] BankCard, [2] Sadad, [3] Edfaly, [4] Tadawul, [5] Mobicash? ";
-            int choice = clsInputValidate::ReadIntNumber();
-            switch (choice)
-            {
-            case enBankCard:
-                booking.setPayment(enBankCard);
-                break;
-            case enSadad:
-                booking.setPayment(enSadad);
-                break;
-            case enEdfaly:
-                booking.setPayment(enEdfaly);
-                break;
-            case enTadawul:
-                booking.setPayment(enTadawul);
-                break;
-            case enMobicach:
-                booking.setPayment(enMobicach);
-                break;
-            default:
-                return;
-            }
-            booking.setCustomerId(customer.getCustomerId());
-            booking.setEventName(event.getName());
-            booking._AddDataLineToFile(_ConverBookingObjectToLine(booking));
-            int h = event.getTotalTickets();
-            h--;
-            event.setTotalTickets(h);
-            vector <Event> vEvent = event._LoadEventDataFromFile();
-            for (Event& C : vEvent)
-            {
-                if (C.getName() == event.getName())
-                {
-                    C = event;
-                    event._SaveEventsDataToFile(vEvent);
-                    break;
-                }
-            }
-            cout << "\n Booking Done!";
-            cout << "\n press any key to continuo...";
-            system("pause>0");
-
-        }
-
-        static void delBooking(Booking book)
+  }
+     
+     static void delBooking(Booking book)
         {
             vector <Booking> vBooking = _LoadBookingDataFromFile();
             for (Booking& C : vBooking)
@@ -450,29 +453,29 @@ class Booking : public Event, Seat
                 }
             }
         }
-
-        static void AddBook(Booking book, Waiting wait)
+     
+     static void AddBook(Booking book, Waiting wait)
         {
             book.setBookingDate(wait.getWaitingDate());
             book.setCustomerId(wait.getCustomerId());
             book._AddDataLineToFile(_ConverBookingObjectToLine(book));
         }
-
-        static void CancelBook(Customer customer)
+     
+     static void CancelBook(Customer customer)
         {
-            cout << "========================================================\n";
-            cout << "Cancel Book.\n";
-            cout << "========================================================\n";
-            cout << "enter name of event? ";
+            cout << "\n\n\t\t\t\t========================================================\n";
+            cout << "\t\t\t\tCancel Book.\n";
+            cout << "\t\t\t\t========================================================\n";
+            cout << "\t\t\t\tenter name of event? ";
             string name = clsInputValidate::ReadString();
             while (!Event::IsEventNameExist(name))
             {
-                cout << "\nthis event not Exit , enter another name? ";
+                cout << "\n\t\t\t\tthis event not Exit , enter another name? ";
                 name = clsInputValidate::ReadString();
             }
             if (!IsBookingExit(customer.getCustomerId(), name) && !Waiting::IsWaitingExit(customer.getCustomerId(), name))
             {
-                cout << "\nYou have not book...";
+                cout << "\n\t\t\t\tYou have not book...";
                 system("pause>0");
                 return;
             }
@@ -492,13 +495,13 @@ class Booking : public Event, Seat
             {
                 Waiting::RemoveCustomerFromWaitingList(wait);
             }
-            cout << "\nRemove Successfuly!";
-            cout << "\nPress any key...";
+            cout << "\n\t\t\t\tRemove Successfuly!";
+            cout << "\n\t\t\t\tPress any key...";
             system("pause>0");
         }
-
      
-            static void PrintBookRecordLine(Booking book)
+     
+     static void PrintBookRecordLine(Booking book)
             {
 
                 cout << setw(8) << left << "" << "| " << setw(15) << left << book.getBookingId();
@@ -509,16 +512,13 @@ class Booking : public Event, Seat
                 cout << "| " << setw(12) << left << book.getTotalPrice();
 
             }
-
-        public:
-
-
-            static void ShowBookingList(Customer customer)
+    
+     static void ShowBookingList(Customer customer)
             {
                 vector <Booking> vBook = _LoadBookingDataFromFile();
-                cout << "\t==========================================\n";
-                cout << "\tBooking List Screen for " << customer.GetName() << endl;
-                cout << "\t==========================================\n";
+                cout << "\t\t\t\t==========================================\n";
+                cout << "\t\t\t\t\tBooking for " << customer.GetName() << endl;
+                cout << "\t\t\t\t==========================================\n";
                 cout << setw(8) << left << "" << "\n\t_______________________________________________________";
                 cout << "_________________________________________\n" << endl;
 
@@ -544,7 +544,7 @@ class Booking : public Event, Seat
                 }
                 if (n == 0)
                 {
-                    cout << "\n\t\t\tNo book to show!";
+                    cout << "\n\t\t\t\t\tNo book to show!";
                 }
 
                 cout << setw(8) << left << "" << "\n\t_______________________________________________________";
@@ -553,6 +553,11 @@ class Booking : public Event, Seat
                 cout << "\n\tpress any key...";
                 system("pause>0");
             }
+
+     static void ShowEvents()
+     {
+         Event::ShowEventList();
+     }
 
 };
 
