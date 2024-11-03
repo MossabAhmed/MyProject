@@ -39,7 +39,6 @@ class Waiting
         return stWaitingRecord;
 
     }
-
     static  vector <Waiting> _LoadWaitingDataFromFile()
     {
 
@@ -69,6 +68,9 @@ class Waiting
         return vWaiting;
 
     }
+
+
+
 
     void _AddDataLineToFile(string  stDataLine)
     {
@@ -110,7 +112,6 @@ class Waiting
 
     }
 public:
-
     Waiting(string waitingId, string waitingDate, string _customer_Id, string eventName)
     {
         _WaitingId = waitingId;
@@ -163,6 +164,9 @@ public:
 
     static Waiting Findwait(string id, string name)
     {
+
+
+
         fstream MyFile;
         MyFile.open("Waiting.txt", ios::in);//read Mode
 
@@ -228,6 +232,9 @@ public:
 
     static Waiting FindId(string id)
     {
+
+
+
         fstream MyFile;
         MyFile.open("Waiting.txt", ios::in);//read Mode
 
@@ -256,6 +263,7 @@ public:
         Waiting waiting = FindId(id);
         return waiting.getWaitingId() == id;
     }
+
 
     static void AddCustomerToWaitingList(string id, string name)
     {
@@ -304,43 +312,45 @@ public:
         cout << "| " << setw(12) << left << wait.getEventName();
     }
 
+        public:
 
-    static void ShowWaitingList(string id)
-    {
-        vector <Waiting> vWait = _LoadWaitingDataFromFile();
-        cout << "\t\t\t\t==========================================\n";
-        cout << "\t\t\t\t\tWaiting List" << endl;
-        cout << "\t\t\t\t==========================================\n";
-        cout << setw(8) << left << "" << "\n\t_______________________________________________________";
-        cout << "_________________________________________\n" << endl;
-    
-        cout << setw(8) << left << "" << "| " << left << setw(15) << "Waiting ID";
-        cout << "| " << left << setw(20) << "Join Date";
-        cout << "| " << left << setw(12) << "Event Name";
-        cout << setw(8) << left << "" << "\n\t_______________________________________________________";
-        cout << "_________________________________________\n" << endl;
-    
-        int n = 0;
-    
-        for (Waiting& C : vWait)
-        {
-            if (C.getCustomerId() == id)
+
+            static void ShowWaitingList(string id)
             {
-                n++;
-                PrintWaitRecordLine(C);
-                cout << endl;
-            }
-        }
-        if (n == 0)
-        {
-            cout << "\n\t\t\t\t\tNo Data to show!";
-        }
-    
-        cout << setw(8) << left << "" << "\n\t_______________________________________________________";
-        cout << "_________________________________________\n" << endl;
-    
-    }
+                vector <Waiting> vWait = _LoadWaitingDataFromFile();
+                cout << "\t==========================================\n";
+                cout << "\tWaiting List Screen" << endl;
+                cout << "\t==========================================\n";
+                cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+                cout << "_________________________________________\n" << endl;
 
- 
+                cout << setw(8) << left << "" << "| " << left << setw(15) << "Waiting ID";
+                cout << "| " << left << setw(20) << "Join Date";
+                cout << "| " << left << setw(12) << "Event Name";
+                cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+                cout << "_________________________________________\n" << endl;
+
+                int n = 0;
+
+                for (Waiting& C : vWait)
+                {
+                    if (C.getCustomerId() == id)
+                    {
+                        n++;
+                        PrintWaitRecordLine(C);
+                        cout << endl;
+                    }
+                }
+                if (n == 0)
+                {
+                    cout << "\n\t\t\tNo Data to show!";
+                }
+
+                cout << setw(8) << left << "" << "\n\t_______________________________________________________";
+                cout << "_________________________________________\n" << endl;
+
+            }
+
+    
 };
 

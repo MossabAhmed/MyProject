@@ -67,6 +67,9 @@ class Customer : public clsPerson
 
     }
 
+
+
+
     void _AddDataLineToFile(string  stDataLine)
     {
         fstream MyFile;
@@ -204,16 +207,16 @@ public:
         Customer customer(enStatue::enCustomer, "", "", "", "");
         while (IsCustomerNameExist(name))
         {
-            cout << "\n\t\t\t\tthis event already exit, enter another name: ";
+            cout << "\nthis event already exit, enter another name: ";
             name = clsInputValidate::ReadString();
         }
         customer.SetName(name);
 
-        cout << "\n\t\t\t\tenter your email? ";
+        cout << "\nenter your email? ";
         string word = clsInputValidate::ReadString();
         customer.SetEmail(word);
 
-        cout << "\n\t\t\t\tenter your phone? ";
+        cout << "\nenter your phone? ";
         word = clsInputValidate::ReadString();
         customer.SetPhone(word);
 

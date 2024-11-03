@@ -31,7 +31,6 @@ public:
 		_Row = row;
 
 	}
-
 	void setCulomn(int culomn)
 	{
 		_Culomn = culomn;
