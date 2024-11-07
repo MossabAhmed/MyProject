@@ -12,7 +12,7 @@
 #include "Event.h"
 using namespace std;
 
-Customer customergen(enStatue::enCustomer, "", "", "", "");
+void CustomerSystem(Customer customer);
 
 void manageEvent()
 {
@@ -92,6 +92,13 @@ void AdminSystem(string name)
 
 }
 
+void gobacktoCustomerSystem(Customer customer)
+{
+	cout << "\n\t\t\t\t press any key to continuo...";
+	system("pause>0");
+	CustomerSystem(customer);
+}
+
 void CustomerSystem(Customer customer)
 {
 	system("cls");
@@ -124,22 +131,22 @@ void CustomerSystem(Customer customer)
 	case 1:
 		system("cls");
 		Booking::PurchaseTicket(customer);
-		CustomerSystem(customer);
+		gobacktoCustomerSystem(customer);
 		break;
 	case 2:
 		system("cls");
 		Booking::CancelBook(customer);
-		CustomerSystem(customer);
+		gobacktoCustomerSystem(customer);
 		break;
 	case 3:
 		system("cls");
 		Booking::ShowBookingList(customer);
-		CustomerSystem(customer);
+		gobacktoCustomerSystem(customer);
 		break;
 	case 4:
 		system("cls");
 		Booking::ShowEvents();
-		CustomerSystem(customer);
+		gobacktoCustomerSystem(customer);
 		break;
 	default:
 		break;
