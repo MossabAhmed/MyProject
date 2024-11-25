@@ -5,27 +5,26 @@
 #include "clsString.h"
 #include <vector>
 #include <fstream>
-
+#include "Event.h"
+#include "Movie.h"
 using namespace std;
 class Admin : public clsPerson
 {
 private:
-    string _Username;
-    string _Password;
     string _AdminId;
-
+    Event* admin;
 
     static Admin _ConvertLinetoAdminObject(string Line, string Seperator = "#//#")
     {
         vector<string> vAdminData;
         vAdminData = clsString::Split(Line, Seperator);
 
-        return Admin(enStatue::enAdmain, vAdminData[0], vAdminData[1], vAdminData[2],
+        return Admin(vAdminData[0], vAdminData[1], vAdminData[2],
             vAdminData[3], vAdminData[4], vAdminData[5]);
 
     }
 
-    
+
     static  vector <Admin> _LoadAdminDataFromFile()
     {
 
@@ -56,39 +55,27 @@ private:
 
     }
 
-    
-
-    
-
- public:
 
 
-    Admin(enStatue statue,string name, string email, string phone, string username, string password, string adminId) : 
-        clsPerson(statue, name, email, phone )
+
+
+public:
+
+    Admin(string name, string username, string password, string phone, string email, string adminId) :
+        clsPerson(name, username, password, phone, email)
     {
-        _Username = username;
-        _Password = password;
         _AdminId = adminId;
-
     }
 
-    string getusername()
+    Admin(Event* event)
     {
-        return _Username;
-    }
-    string getpassword()
-    {
-        return _Password;
+        this->admin = event;
     }
 
-
-    
+    Admin() {}
 
     static Admin Find(string username, string password)
     {
-
-
-
         fstream MyFile;
         MyFile.open("Admin.txt", ios::in);//read Mode
 
@@ -98,7 +85,7 @@ private:
             while (getline(MyFile, Line))
             {
                 Admin admin = _ConvertLinetoAdminObject(Line);
-                if (admin.getusername() == username && admin.getpassword() == password)
+                if (admin.getUsername() == username && admin.getPassword() == password)
                 {
                     MyFile.close();
                     return admin;
@@ -109,7 +96,7 @@ private:
             MyFile.close();
 
         }
-        return Admin(enStatue::enAdmain, "", "", "", "", "", "");
+        return Admin("", "", "", "", "", "");
     }
     static Admin Find(string username)
     {
@@ -125,7 +112,7 @@ private:
             while (getline(MyFile, Line))
             {
                 Admin admin = _ConvertLinetoAdminObject(Line);
-                if (admin.getusername() == username)
+                if (admin.getUsername() == username)
                 {
                     MyFile.close();
                     return admin;
@@ -136,7 +123,7 @@ private:
             MyFile.close();
 
         }
-        return Admin(enStatue::enAdmain, "", "", "", "", "", "");
+        return Admin("", "", "", "", "", "");
     }
 
 
@@ -145,16 +132,16 @@ private:
 
         Admin admin = Admin::Find(username);
 
-        return admin.getusername() == username;
+        return admin.getUsername() == username;
     }
     static bool IsAdminExist(string username, string password)
     {
 
         Admin admin = Admin::Find(username, password);
 
-        return admin.getusername() == username && admin.getpassword() == password;
+        return admin.getUsername() == username && admin.getPassword() == password;
     }
-    
+
 
 };
 

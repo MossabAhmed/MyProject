@@ -66,15 +66,10 @@ class Concert : public Event
 public:
 
 	Concert(string name, string eventType, string location, string date,
-		string eventId, float price, int totalSeats, string Band, string musictype, string album)
+		string eventId, float price, int totalSeats, string Band,
+		string musictype, string album) : Event(name, eventType, location,
+			date, eventId, price, totalSeats)
 	{
-		_Name = name;
-		_EventType = eventType;
-		_Location = location;
-		_TimeDate = date;
-		_EventId = eventId;
-		_Price = price;
-		_TotalSeats = totalSeats;
 		_Band = Band;
 		_MusicType = musictype;
 		_Album = album;
@@ -82,85 +77,6 @@ public:
 
 	Concert() {}
 
-	void setEventName(string name)
-	{
-		_Name = name;
-	}
-
-	string getEventName()
-	{
-		return _Name;
-	}
-
-	void setEventType(string eventType)
-	{
-		_EventType = eventType;
-	}
-
-	string getEventType()
-	{
-		return _EventType;
-	}
-
-	void setLocation(string location)
-	{
-		_Location = location;
-	}
-
-	string getLocation()
-	{
-		return _Location;
-	}
-
-	void setPrice(float price)
-	{
-		_Price = price;
-	}
-
-	float getPrice()
-	{
-		return _Price;
-	}
-
-	void setEventId(string eventId)
-	{
-		_EventId = eventId;
-	}
-
-	string getEventId()
-	{
-		return _EventId;
-	}
-
-	void setDate(string date)
-	{
-		_TimeDate = date;
-	}
-
-	string getDate()
-	{
-		return _TimeDate;
-	}
-
-	void setTotalSeats(int totalSeats)
-	{
-		_TotalSeats = totalSeats;
-	}
-
-	int getTotalSeats()
-	{
-		return _TotalSeats;
-	}
-
-	void setCheckdel()
-	{
-		checkdel = true;
-	}
-
-	bool getCheckdel()
-	{
-		return checkdel;
-	}
 	void setBand(string band)
 	{
 		_Band = band;
@@ -249,32 +165,7 @@ public:
 	}
 
 
-	void FindName()
-	{
-
-		fstream MyFile;
-		MyFile.open("Concert.txt", ios::in);//read Mode
-		Concert  movie;
-		if (MyFile.is_open())
-		{
-			string Line;
-			while (getline(MyFile, Line))
-			{
-
-				movie = _ConvertLinetoConcertObject(Line);
-				if (movie.getEventName() == gloname)
-				{
-					MyFile.close();
-					globEvent = &movie;
-				}
-
-			}
-
-			MyFile.close();
-
-		}
-
-	}
+	
 
 
 	Concert FindEventName(string Name)
@@ -486,7 +377,7 @@ public:
 				cin >> bl;
 				if (toupper(bl) == 'Y')
 				{
-					C.checkdel = true;
+					C.setCheckdel();
 					_SaveConcertDataToFile(vEvent);
 				}
 				else

@@ -141,9 +141,12 @@
     <ClInclude Include="clsUserScreen.h" />
     <ClInclude Include="Concert.h" />
     <ClInclude Include="Customer.h" />
+    <ClInclude Include="CustomerInterface.h" />
     <ClInclude Include="Event.h" />
-    <ClInclude Include="Seat.h" />
-    <ClInclude Include="Waiting.h" />
+    <ClInclude Include="GlobalCustomer.h" />
+    <ClInclude Include="GlobalEvent.h" />
+    <ClInclude Include="OperationScreen.h" />
+    <ClInclude Include="RequimentScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
