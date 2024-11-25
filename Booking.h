@@ -11,7 +11,7 @@
 using namespace std;
 enum enPayment{ enBankCard = 1, enSadad = 2, enEdfaly = 3, enTadawul = 4, enMobicach = 5};
 enum enStatueB{enActive = 1, enWaiting = 2, enCancel = 3};
-class Booking : public Event, Seat
+class Booking
 {
 	string _BookingId;
 	string _BookingDate;
@@ -46,7 +46,7 @@ class Booking : public Event, Seat
         stBookingRecord += booking.getCustomerId() + Seperator;
         stBookingRecord += booking.getEventName() + Seperator;
         stBookingRecord += to_string(booking.getTotalPrice()) + Seperator;
-        stBookingRecord += booking.getRow() + Seperator;
+        stBookingRecord +=  + Seperator;
         stBookingRecord += to_string(booking.getCulomn()) + Seperator;
         stBookingRecord += booking.getPayment() + Seperator;
         stBookingRecord += booking.getStatue();
