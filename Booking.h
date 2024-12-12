@@ -262,31 +262,28 @@ public:
         return (booking.getBookingId() == id);
     }
 
-    static void moviepurchase()
+    static bool moviepurchase(string name)
     {
 
-        string name;
         Movie movie;
         Booking booking;
-        cout << "\t\t\t\tenter name of event? ";
-        name = clsInputValidate::ReadString();
-        while (!movie.IsEventNameExist(name))
+        if (!movie.IsEventNameExist(name))
         {
-            cout << "\n\t\t\t\tthis event not Exist , enter another name? ";
-            name = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tthis event not Exist!";
+            return false;
         }
 
         movie = movie.FindEventName(name);
         if (IsBookingExit(globCustomer.getCustomerId(), name))
         {
             cout << "\n\t\t\t\tYou already book this Event...";
-            return;
+            return false;
         }
 
         if (movie.getTotalSeats() == 0)
         {
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
-            return;
+            return false;
         }
 
         random_device rd;
@@ -320,32 +317,30 @@ public:
 
         }
         movie._SaveMoviesDataToFile(vMovie);
-
+        return true;
     }
-    static void Concertpurchase()
+    static bool Concertpurchase(string name)
     {
-        string name;
+        
         Concert movie;
         Booking booking;
-        cout << "\t\t\t\tenter name of event? ";
-        name = clsInputValidate::ReadString();
-        while (!movie.IsEventNameExist(name))
+        if (!movie.IsEventNameExist(name))
         {
-            cout << "\n\t\t\t\tthis event not Exist , enter another name? ";
-            name = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tthis event not Exist!";
+            return false;
         }
 
         movie = movie.FindEventName(name);
         if (IsBookingExit(globCustomer.getCustomerId(), name))
         {
             cout << "\n\t\t\t\tYou already book this Event...";
-            return;
+            return false;
         }
 
         if (movie.getTotalSeats() == 0)
         {
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
-            return;
+            return false;
         }
 
         random_device rd;
@@ -379,31 +374,31 @@ public:
 
         }
         movie._SaveConcertDataToFile(vMovie);
+        return true;
     }
-    static void Playpurchase()
+
+    static bool Playpurchase(string name)
     {
-        string name;
         Play movie;
         Booking booking;
-        cout << "\t\t\t\tenter name of event? ";
-        name = clsInputValidate::ReadString();
-        while (!movie.IsEventNameExist(name))
+        if (!movie.IsEventNameExist(name))
         {
-            cout << "\n\t\t\t\tthis event not Exist , enter another name? ";
-            name = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tthis event not Exist!";
+            return false;
+        
         }
 
         movie = movie.FindEventName(name);
         if (IsBookingExit(globCustomer.getCustomerId(), name))
         {
             cout << "\n\t\t\t\tYou already book this Event...";
-            return;
+            return false;
         }
 
         if (movie.getTotalSeats() == 0)
         {
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
-            return;
+            return false;
         }
 
         random_device rd;
@@ -437,6 +432,7 @@ public:
 
         }
         movie._SaveConcertDataToFile(vMovie);
+        return true;
     }
 
 
@@ -504,18 +500,16 @@ public:
         }
     }
 
-    static void CancelMovie()
+    static bool CancelMovie(string name)
     {
-        string name;
+        
         Booking booking;
         Movie movie;
 
-        cout << "\t\t\t\tenter name of event? ";
-        name = clsInputValidate::ReadString();
-        while (!IsBookingExit(globCustomer.getCustomerId(), name))
+        if (!IsBookingExit(globCustomer.getCustomerId(), name))
         {
-            cout << "\n\t\t\t\tthis event not Exist or no book , enter another name? ";
-            name = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tthis event not Exist or no book!";
+            return false;
         }
         Booking book = Find(globCustomer.getCustomerId(), name);
         delBooking(book);
@@ -531,19 +525,17 @@ public:
 
         }
         movie._SaveMoviesDataToFile(vMovie);
+        return true;
     }
-    static void CancelConcert()
+    static bool CancelConcert(string name)
     {
-        string name;
         Booking booking;
         Concert movie;
 
-        cout << "\t\t\t\tenter name of event? ";
-        name = clsInputValidate::ReadString();
-        while (!IsBookingExit(globCustomer.getCustomerId(), name))
+        if (!IsBookingExit(globCustomer.getCustomerId(), name))
         {
-            cout << "\n\t\t\t\tthis event not Exist or no book , enter another name? ";
-            name = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tthis event not Exist or no book!";
+            return false;
         }
         Booking book = Find(globCustomer.getCustomerId(), name);
         delBooking(book);
@@ -559,19 +551,17 @@ public:
 
         }
         movie._SaveConcertDataToFile(vMovie);
+        return true;
     }
-    static void CancelPlay()
+    static bool CancelPlay(string name)
     {
-        string name;
         Booking booking;
         Play movie;
 
-        cout << "\t\t\t\tenter name of event? ";
-        name = clsInputValidate::ReadString();
-        while (!IsBookingExit(globCustomer.getCustomerId(), name))
+        if (!IsBookingExit(globCustomer.getCustomerId(), name))
         {
-            cout << "\n\t\t\t\tthis event not Exist or no book, enter another name? ";
-            name = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tthis event not Exist or no book!";
+            return false;
         }
         Booking book = Find(globCustomer.getCustomerId(), name);
         delBooking(book);
@@ -587,6 +577,7 @@ public:
 
         }
         movie._SaveConcertDataToFile(vMovie);
+        return true;
     }
 
 

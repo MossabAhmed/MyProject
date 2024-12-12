@@ -272,8 +272,6 @@ public:
 
 		movie._AddDataLineToFile(_ConverConcertObjectToLine(movie));
 		cout << "\n\t\t\t\tAdd Successfully!";
-		cout << "\n\t\t\t\tpress any key to continuo...";
-		system("pause>0");
 	}
 
 	static void  modify(Play& event)

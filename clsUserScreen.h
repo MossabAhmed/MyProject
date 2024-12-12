@@ -60,6 +60,7 @@ public:
 		if (admin.getUsername() == name)
 		{
 			AdminInterface::showtypeEvent();
+
 			return;
 		}
 		CustomerInterface::showtypeEvent();

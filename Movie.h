@@ -288,8 +288,6 @@ public:
 		movie.setAge(name5);
 		_AddDataLineToFile(_ConverMovieObjectToLine(movie));
 		cout << "\n\t\t\t\tAdd Successfully!";
-		cout << "\n\t\t\t\tpress any key to continuo...";
-		system("pause>0");
 	}
 	static void  modify(Event& event)
 	{

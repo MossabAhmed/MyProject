@@ -46,7 +46,7 @@ class AdminInterface : public clsScreen
 		try
 		{
 			choice = clsInputValidate::ReadIntNumber();
-			if (choice < 1 || choice > 4)
+			if (choice < 1 || choice > 5)
 				throw "error";
 		}
 		catch (...)

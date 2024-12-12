@@ -15,20 +15,27 @@ public:
 		string title = "Purchase Screen";
 		_DrawScreenHeader(title);
 
+		cout << "\t\t\t\tenter name of event? ";
+		string name = clsInputValidate::ReadString();
 
 		if (type == "Movie")
 		{
-			Booking::moviepurchase();
+			if (Booking::moviepurchase(name))
+				cout << "\n\t\t\t\t Booking Done!";
+
 		}
 		else if (type == "Concert")
 		{
-			Booking::Concertpurchase();
+			if (Booking::Concertpurchase(name))
+				cout << "\n\t\t\t\t Booking Done!";
+
 		}
 		else
 		{
-			Booking::Playpurchase();
+			if (Booking::Playpurchase(name))
+				cout << "\n\t\t\t\t Booking Done!";
+
 		}
-		cout << "\n\t\t\t\t Booking Done!";
 
 	}
 
@@ -43,20 +50,29 @@ public:
 			return;
 		}
 
+		cout << "\t\t\t\tenter name of event? ";
+		string name = clsInputValidate::ReadString();
+
+
 		if (type == "Movie")
 		{
 
-			Booking::CancelMovie();
+			if (Booking::CancelMovie(name))
+				cout << "\n\t\t\t\tRemove Successfuly!";
+
 		}
 		else if (type == "Concert")
 		{
-			Booking::CancelConcert();
+			if (Booking::CancelConcert(name))
+				cout << "\n\t\t\t\tRemove Successfuly!";
+
 		}
 		else
 		{
-			Booking::CancelPlay();
+			if (Booking::CancelPlay(name))
+				cout << "\n\t\t\t\tRemove Successfuly!";
+
 		}
-		cout << "\n\t\t\t\tRemove Successfuly!";
 
 	}
 
