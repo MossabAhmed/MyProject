@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="AdminInterface.h" />
+    <ClInclude Include="BankCard.h" />
     <ClInclude Include="Booking.h" />
     <ClInclude Include="clsDate.h" />
     <ClInclude Include="clsInputValidate.h" />
@@ -146,7 +147,9 @@
     <ClInclude Include="GlobalCustomer.h" />
     <ClInclude Include="GlobalEvent.h" />
     <ClInclude Include="OperationScreen.h" />
+    <ClInclude Include="Payment.h" />
     <ClInclude Include="RequimentScreen.h" />
+    <ClInclude Include="Tadawul.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,6 +8,8 @@
 #include "Event.h"
 #include "GlobalCustomer.h"
 #include "GlobalEvent.h"
+#include "BankCard.h"
+#include "Tadawul.h"
 #include "Movie.h"
 #include "Concert.h"
 #include "Play.h"
@@ -22,6 +24,9 @@ class Booking
     string _NameEvent;
     float _TotalPrice;
     bool checkbook = false;
+    string _PaymentStatus;
+    string _PaymentMethod;
+    string _TransactionId;
 
     static Booking _ConvertLinetoBookingObject(string Line, string Seperator = "#//#")
     {
@@ -29,10 +34,10 @@ class Booking
         vBookingData = clsString::Split(Line, Seperator);
         if (vBookingData.empty())
         {
-            return Booking("", "", "", "", 0.0);
+            return Booking("", "", "", "", 0.0, "", "", "");
         }
         return Booking(vBookingData[0], vBookingData[1], vBookingData[2],
-            vBookingData[3], stod(vBookingData[4]));
+            vBookingData[3], stod(vBookingData[4]), vBookingData[5], vBookingData[6], vBookingData[7]);
 
     }
 
@@ -45,6 +50,9 @@ class Booking
         stBookingRecord += booking.getCustomerId() + Seperator;
         stBookingRecord += booking.getEventName() + Seperator;
         stBookingRecord += to_string(booking.getTotalPrice()) + Seperator;
+        stBookingRecord += booking.getPaymentStatus() + Seperator;
+        stBookingRecord += booking.getPaymentMethod() + Seperator;
+        stBookingRecord += booking.getTransactionId();
 
         return stBookingRecord;
 
@@ -123,13 +131,16 @@ class Booking
     }
 
 public:
-    Booking(string bookingId, string bookingDate, string customerId, string name, float price)
+    Booking(string bookingId, string bookingDate, string customerId, string name, float price, string status, string method, string id)
     {
         _BookingId = bookingId;
         _BookingDate = bookingDate;
         _CustomerId = customerId;
         _NameEvent = name;
         _TotalPrice = price;
+        _PaymentStatus = status;
+        _PaymentMethod = method;
+        _TransactionId = id;
     }
 
     Booking() {}
@@ -193,6 +204,17 @@ public:
     {
         return checkbook;
     }
+    void setPaymentStatus(string status){ _PaymentStatus = status; }
+
+    void setPaymentMethod(string method) { _PaymentMethod = method; }
+
+    void setTransactionId(string id) { _TransactionId = id; }
+
+    string getPaymentStatus() const { return _PaymentStatus; }
+
+    string getPaymentMethod() const { return _PaymentMethod; }
+
+    string getTransactionId() const { return _TransactionId; }
 
     static Booking Find(string id, string name)
     {
@@ -219,7 +241,7 @@ public:
             MyFile.close();
 
         }
-        return Booking("", "", "", "", 0.0);
+        return Booking("", "", "", "", 0.0, "", "", "");
     }
 
     static bool IsBookingExit(string id, string name)
@@ -253,7 +275,7 @@ public:
             MyFile.close();
 
         }
-        return Booking("", "", "", "", 0.0);
+        return Booking("", "", "", "", 0.0, "", "", "");
     }
 
     static bool IsBookingIdExit(string id)
@@ -285,6 +307,62 @@ public:
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
             return false;
         }
+
+        cout << "\n\t\t\t\tSelect Payment Method:";
+        cout << "\n\t\t\t\t1. BankCard";
+        cout << "\n\t\t\t\t2. Tadawul";
+        cout << "\n\t\t\t\tEnter choice: ";
+
+        int choice;
+        cin >> choice;
+        bool paymentSuccess = false;
+        string transactionId;
+
+        if (choice == 1)
+        {
+            string cardNumber, cardHolder, expiry, cvv;
+            cout << "\n\t\t\t\tEnter Card Number: ";
+            cardNumber = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter Card Holder Name: ";
+            cardHolder = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter Expiry Date (MM/YY): ";
+            expiry = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter CVV: ";
+            cvv = clsInputValidate::ReadString();
+
+            BankCard credit(movie.getPrice(), cardNumber, cardHolder, expiry, cvv);
+            paymentSuccess = credit.processPayment();
+            if (paymentSuccess) {
+                transactionId = credit.getTransactionId();
+                booking.setPaymentMethod("Bank Card");
+            }
+        }
+
+        else if (choice == 2)
+        {
+            string cardNumber, expiry;
+            float limit;
+            cout << "\n\t\t\t\tEnter Card Number: ";
+            cardNumber = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter Expiry Date (MM/YY): ";
+            expiry = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter limit of credit: ";
+            limit = clsInputValidate::ReadFloatNumber();
+            Tadawul credit(movie.getPrice(), cardNumber, expiry, limit);
+            paymentSuccess = credit.processPayment();
+            if (paymentSuccess) {
+                transactionId = credit.getTransactionId();
+                booking.setPaymentMethod("Tadawul");
+            }
+        }
+        
+        if (!paymentSuccess) {
+            cout << "\n\t\t\t\tPayment Failed! Booking cancelled.";
+            return false;
+        }
+
+        booking.setPaymentStatus("Paid");
+        booking.setTransactionId(transactionId);
 
         random_device rd;
         uniform_int_distribution<int> dist(3000000, 3999999);
@@ -343,6 +421,63 @@ public:
             return false;
         }
 
+        cout << "\n\t\t\t\tSelect Payment Method:";
+        cout << "\n\t\t\t\t1. BankCard";
+        cout << "\n\t\t\t\t2. Tadawul";
+        cout << "\n\t\t\t\tEnter choice: ";
+
+        int choice;
+        cin >> choice;
+        bool paymentSuccess = false;
+        string transactionId;
+
+        if (choice == 1)
+        {
+            string cardNumber, cardHolder, expiry, cvv;
+            cout << "\n\t\t\t\tEnter Card Number: ";
+            cardNumber = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter Card Holder Name: ";
+            cardHolder = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter Expiry Date (MM/YY): ";
+            expiry = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter CVV: ";
+            cvv = clsInputValidate::ReadString();
+
+            BankCard credit(movie.getPrice(), cardNumber, cardHolder, expiry, cvv);
+            paymentSuccess = credit.processPayment();
+            if (paymentSuccess) {
+                transactionId = credit.getTransactionId();
+                booking.setPaymentMethod("Bank Card");
+            }
+        }
+
+        else if (choice == 2)
+        {
+            string cardNumber, expiry;
+            float limit;
+            cout << "\n\t\t\t\tEnter Card Number: ";
+            cardNumber = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter Expiry Date (MM/YY): ";
+            expiry = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter limit of credit: ";
+            limit = clsInputValidate::ReadFloatNumber();
+            Tadawul credit(movie.getPrice(), cardNumber, expiry, limit);
+            paymentSuccess = credit.processPayment();
+            if (paymentSuccess) {
+                transactionId = credit.getTransactionId();
+                booking.setPaymentMethod("Tadawul");
+            }
+        }
+
+        if (!paymentSuccess) {
+            cout << "\n\t\t\t\tPayment Failed! Booking cancelled.";
+            return false;
+        }
+
+        booking.setPaymentStatus("Paid");
+        booking.setTransactionId(transactionId);
+
+
         random_device rd;
         uniform_int_distribution<int> dist(3000000, 3999999);
         name = to_string(dist(rd));
@@ -400,6 +535,63 @@ public:
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
             return false;
         }
+
+        cout << "\n\t\t\t\tSelect Payment Method:";
+        cout << "\n\t\t\t\t1. BankCard";
+        cout << "\n\t\t\t\t2. Tadawul";
+        cout << "\n\t\t\t\tEnter choice: ";
+
+        int choice;
+        cin >> choice;
+        bool paymentSuccess = false;
+        string transactionId;
+
+        if (choice == 1)
+        {
+            string cardNumber, cardHolder, expiry, cvv;
+            cout << "\n\t\t\t\tEnter Card Number: ";
+            cardNumber = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter Card Holder Name: ";
+            cardHolder = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter Expiry Date (MM/YY): ";
+            expiry = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter CVV: ";
+            cvv = clsInputValidate::ReadString();
+
+            BankCard credit(movie.getPrice(), cardNumber, cardHolder, expiry, cvv);
+            paymentSuccess = credit.processPayment();
+            if (paymentSuccess) {
+                transactionId = credit.getTransactionId();
+                booking.setPaymentMethod("Bank Card");
+            }
+        }
+
+        else if (choice == 2)
+        {
+            string cardNumber, expiry;
+            float limit;
+            cout << "\n\t\t\t\tEnter Card Number: ";
+            cardNumber = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter Expiry Date (MM/YY): ";
+            expiry = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tEnter limit of credit: ";
+            limit = clsInputValidate::ReadFloatNumber();
+            Tadawul credit(movie.getPrice(), cardNumber, expiry, limit);
+            paymentSuccess = credit.processPayment();
+            if (paymentSuccess) {
+                transactionId = credit.getTransactionId();
+                booking.setPaymentMethod("Tadawul");
+            }
+        }
+
+        if (!paymentSuccess) {
+            cout << "\n\t\t\t\tPayment Failed! Booking cancelled.";
+            return false;
+        }
+
+        booking.setPaymentStatus("Paid");
+        booking.setTransactionId(transactionId);
+
 
         random_device rd;
         uniform_int_distribution<int> dist(3000000, 3999999);
