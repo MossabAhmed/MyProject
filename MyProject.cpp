@@ -6,6 +6,6 @@ using namespace std;
 
 int main()
 {
-	clsUserScreen::UserInerface();
+	clsUserScreen::UserInerface(); 
 	system("pause>0");
 }
