@@ -13,11 +13,8 @@
 #include "Movie.h"
 #include "Concert.h"
 #include "Play.h"
-<<<<<<< HEAD
 #include "EventFactory.h"
-=======
 #include "Waitinglist.h"
->>>>>>> f9aad0494bfd5cb41f47606757d1eaaffc52ae7f
 
 
 using namespace std;
@@ -291,16 +288,16 @@ public:
 
     static bool moviepurchase(string name)
     {
-
-        Movie movie;
+        Event* event = EventFactory::createEvent("Movie");
+        Movie* movie = dynamic_cast<Movie*>(event);
         Booking booking;
-        if (!movie.IsEventNameExist(name))
+        if (!movie->IsEventNameExist(name))
         {
             cout << "\n\t\t\t\tthis event not Exist!";
             return false;
         }
 
-        movie = movie.FindEventName(name);
+        *movie = movie->FindEventName(name);
         if (IsBookingExit(globCustomer.getCustomerId(), name))
         {
             cout << "\n\t\t\t\tYou already book this Event...";
@@ -313,7 +310,7 @@ public:
             return false;
         }
         char ch = 'N';
-        if (movie.getTotalSeats() == 0)
+        if (movie->getTotalSeats() == 0)
         {
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
             cout << "\n\t\t\t\tdo you want to join in waiting list? Y/N? ";
@@ -347,7 +344,7 @@ public:
             cout << "\n\t\t\t\tEnter CVV: ";
             cvv = clsInputValidate::ReadString();
 
-            BankCard credit(movie.getPrice(), cardNumber, cardHolder, expiry, cvv);
+            BankCard credit(movie->getPrice(), cardNumber, cardHolder, expiry, cvv);
             paymentSuccess = credit.processPayment();
             if (paymentSuccess) {
                 transactionId = credit.getTransactionId();
@@ -365,7 +362,7 @@ public:
             expiry = clsInputValidate::ReadString();
             cout << "\n\t\t\t\tEnter limit of credit: ";
             limit = clsInputValidate::ReadFloatNumber();
-            Tadawul credit(movie.getPrice(), cardNumber, expiry, limit);
+            Tadawul credit(movie->getPrice(), cardNumber, expiry, limit);
             paymentSuccess = credit.processPayment();
             if (paymentSuccess) {
                 transactionId = credit.getTransactionId();
@@ -395,38 +392,39 @@ public:
         booking.setBookingDate(name);
 
 
-        booking.setTotalPrice(movie.getPrice());
+        booking.setTotalPrice(movie->getPrice());
 
         booking.setCustomerId(globCustomer.getCustomerId());
-        booking.setEventName(movie.getEventName());
+        booking.setEventName(movie->getEventName());
         booking._AddDataLineToFile(_ConverBookingObjectToLine(booking));
-        movie.setTotalSeats(movie.getTotalSeats() - 1);
-        vector <Movie> vMovie = movie._LoadMovieDataFromFile();
-        for (Movie& C : vMovie)
+        movie->setTotalSeats(movie->getTotalSeats() - 1);
+        vector <Movie> vMovie = movie->_LoadMovieDataFromFile();
+        for (Movie C : vMovie)
         {
-            if (C.getEventName() == movie.getEventName())
+            if (C.getEventName() == movie->getEventName())
             {
-                C = movie;
+                C = *movie;
                 break;
             }
 
         }
-        movie._SaveMoviesDataToFile(vMovie);
+        movie->_SaveMoviesDataToFile(vMovie);
         return true;
     }
 
     static bool Concertpurchase(string name)
     {
         
-        Concert movie;
+        Event* event = EventFactory::createEvent("Concert");
+        Concert* movie = dynamic_cast<Concert*>(event);
         Booking booking;
-        if (!movie.IsEventNameExist(name))
+        if (!movie->IsEventNameExist(name))
         {
             cout << "\n\t\t\t\tthis event not Exist!";
             return false;
         }
 
-        movie = movie.FindEventName(name);
+        *movie = movie->FindEventName(name);
         if (IsBookingExit(globCustomer.getCustomerId(), name))
         {
             cout << "\n\t\t\t\tYou already book this Event...";
@@ -437,9 +435,10 @@ public:
         {
             cout << "\n\t\t\t\tYou are in Waiting List!";
             return false;
+
         }
         char ch = 'N';
-        if (movie.getTotalSeats() == 0)
+        if (movie->getTotalSeats() == 0)
         {
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
             cout << "\n\t\t\t\tdo you want to join in waiting list? Y/N? ";
@@ -473,7 +472,7 @@ public:
             cout << "\n\t\t\t\tEnter CVV: ";
             cvv = clsInputValidate::ReadString();
 
-            BankCard credit(movie.getPrice(), cardNumber, cardHolder, expiry, cvv);
+            BankCard credit(movie->getPrice(), cardNumber, cardHolder, expiry, cvv);
             paymentSuccess = credit.processPayment();
             if (paymentSuccess) {
                 transactionId = credit.getTransactionId();
@@ -491,7 +490,7 @@ public:
             expiry = clsInputValidate::ReadString();
             cout << "\n\t\t\t\tEnter limit of credit: ";
             limit = clsInputValidate::ReadFloatNumber();
-            Tadawul credit(movie.getPrice(), cardNumber, expiry, limit);
+            Tadawul credit(movie->getPrice(), cardNumber, expiry, limit);
             paymentSuccess = credit.processPayment();
             if (paymentSuccess) {
                 transactionId = credit.getTransactionId();
@@ -522,38 +521,39 @@ public:
         booking.setBookingDate(name);
 
 
-        booking.setTotalPrice(movie.getPrice());
+        booking.setTotalPrice(movie->getPrice());
 
         booking.setCustomerId(globCustomer.getCustomerId());
-        booking.setEventName(movie.getEventName());
+        booking.setEventName(movie->getEventName());
         booking._AddDataLineToFile(_ConverBookingObjectToLine(booking));
-        movie.setTotalSeats(movie.getTotalSeats() - 1);
-        vector <Concert> vMovie = movie._LoadConcertDataFromFile();
+        movie->setTotalSeats(movie->getTotalSeats() - 1);
+        vector <Concert> vMovie = movie->_LoadConcertDataFromFile();
         for (Concert& C : vMovie)
         {
-            if (C.getEventName() == movie.getEventName())
+            if (C.getEventName() == movie->getEventName())
             {
-                C = movie;
+                C = *movie;
                 break;
             }
 
         }
-        movie._SaveConcertDataToFile(vMovie);
+        movie->_SaveConcertDataToFile(vMovie);
         return true;
     }
 
     static bool Playpurchase(string name)
     {
-        Play movie;
+        Event* event = EventFactory::createEvent("Play");
+        Play* movie = dynamic_cast<Play*>(event);
         Booking booking;
-        if (!movie.IsEventNameExist(name))
+        if (!movie->IsEventNameExist(name))
         {
             cout << "\n\t\t\t\tthis event not Exist!";
             return false;
         
         }
 
-        movie = movie.FindEventName(name);
+        *movie = movie->FindEventName(name);
         if (IsBookingExit(globCustomer.getCustomerId(), name))
         {
             cout << "\n\t\t\t\tYou already book this Event...";
@@ -567,7 +567,7 @@ public:
             return false;
         }
         char ch = 'N';
-        if (movie.getTotalSeats() == 0)
+        if (movie->getTotalSeats() == 0)
         {
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
             cout << "\n\t\t\t\tdo you want to join in waiting list? Y/N? ";
@@ -602,7 +602,7 @@ public:
             cout << "\n\t\t\t\tEnter CVV: ";
             cvv = clsInputValidate::ReadString();
 
-            BankCard credit(movie.getPrice(), cardNumber, cardHolder, expiry, cvv);
+            BankCard credit(movie->getPrice(), cardNumber, cardHolder, expiry, cvv);
             paymentSuccess = credit.processPayment();
             if (paymentSuccess) {
                 transactionId = credit.getTransactionId();
@@ -620,7 +620,7 @@ public:
             expiry = clsInputValidate::ReadString();
             cout << "\n\t\t\t\tEnter limit of credit: ";
             limit = clsInputValidate::ReadFloatNumber();
-            Tadawul credit(movie.getPrice(), cardNumber, expiry, limit);
+            Tadawul credit(movie->getPrice(), cardNumber, expiry, limit);
             paymentSuccess = credit.processPayment();
             if (paymentSuccess) {
                 transactionId = credit.getTransactionId();
@@ -651,23 +651,23 @@ public:
         booking.setBookingDate(name);
 
 
-        booking.setTotalPrice(movie.getPrice());
+        booking.setTotalPrice(movie->getPrice());
 
         booking.setCustomerId(globCustomer.getCustomerId());
-        booking.setEventName(movie.getEventName());
+        booking.setEventName(movie->getEventName());
         booking._AddDataLineToFile(_ConverBookingObjectToLine(booking));
-        movie.setTotalSeats(movie.getTotalSeats() - 1);
-        vector <Play> vMovie = movie._LoadConcertDataFromFile();
+        movie->setTotalSeats(movie->getTotalSeats() - 1);
+        vector <Play> vMovie = movie->_LoadConcertDataFromFile();
         for (Play& C : vMovie)
         {
-            if (C.getEventName() == movie.getEventName())
+            if (C.getEventName() == movie->getEventName())
             {
-                C = movie;
+                C = *movie;
                 break;
             }
 
         }
-        movie._SaveConcertDataToFile(vMovie);
+        movie->_SaveConcertDataToFile(vMovie);
         return true;
     }
 
@@ -735,6 +735,7 @@ public:
                     C.setCustomerId(wait.getcustomer());
                     C.setBookingDate(clsInputValidate::Datetime());
                     C.setEventName(wait.getEventname());
+                    Waitinglist::RemoveCustomer(wait);
                 }
                 else
                 {

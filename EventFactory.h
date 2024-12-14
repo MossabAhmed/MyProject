@@ -5,7 +5,8 @@
 #include "Play.h"
 #include <string>
 
-class EventFactory {
+class EventFactory 
+{
 public:
   
 
@@ -19,7 +20,7 @@ public:
             event = new Concert();
 
         else
-            event = new Play;
+            event = new Play();
 
         
         return event;
