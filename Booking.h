@@ -13,7 +13,11 @@
 #include "Movie.h"
 #include "Concert.h"
 #include "Play.h"
+<<<<<<< HEAD
 #include "EventFactory.h"
+=======
+#include "Waitinglist.h"
+>>>>>>> f9aad0494bfd5cb41f47606757d1eaaffc52ae7f
 
 
 using namespace std;
@@ -303,9 +307,21 @@ public:
             return false;
         }
 
+        if (Waitinglist::IsBookingExit(globCustomer.getCustomerId(), name))
+        {
+            cout << "\n\t\t\t\tYou are in Waiting List!";
+            return false;
+        }
+        char ch = 'N';
         if (movie.getTotalSeats() == 0)
         {
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
+            cout << "\n\t\t\t\tdo you want to join in waiting list? Y/N? ";
+            cin >> ch;
+            if (toupper(ch) == 'Y')
+            {
+                Waitinglist::AddCustomer(globCustomer.getCustomerId(), name);
+            }
             return false;
         }
 
@@ -398,6 +414,7 @@ public:
         movie._SaveMoviesDataToFile(vMovie);
         return true;
     }
+
     static bool Concertpurchase(string name)
     {
         
@@ -416,9 +433,21 @@ public:
             return false;
         }
 
+        if (Waitinglist::IsBookingExit(globCustomer.getCustomerId(), name))
+        {
+            cout << "\n\t\t\t\tYou are in Waiting List!";
+            return false;
+        }
+        char ch = 'N';
         if (movie.getTotalSeats() == 0)
         {
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
+            cout << "\n\t\t\t\tdo you want to join in waiting list? Y/N? ";
+            cin >> ch;
+            if (toupper(ch) == 'Y')
+            {
+                Waitinglist::AddCustomer(globCustomer.getCustomerId(), name);
+            }
             return false;
         }
 
@@ -531,11 +560,25 @@ public:
             return false;
         }
 
+
+        if (Waitinglist::IsBookingExit(globCustomer.getCustomerId(), name))
+        {
+            cout << "\n\t\t\t\tYou are in Waiting List!";
+            return false;
+        }
+        char ch = 'N';
         if (movie.getTotalSeats() == 0)
         {
             cout << "\n\t\t\t\tsorry, there are no tickets available for purchase!";
+            cout << "\n\t\t\t\tdo you want to join in waiting list? Y/N? ";
+            cin >> ch;
+            if (toupper(ch) == 'Y')
+            {
+                Waitinglist::AddCustomer(globCustomer.getCustomerId(), name);
+            }
             return false;
         }
+
 
         cout << "\n\t\t\t\tSelect Payment Method:";
         cout << "\n\t\t\t\t1. BankCard";
@@ -686,7 +729,17 @@ public:
         {
             if (C.getBookingId() == book.getBookingId())
             {
-                C.setCheckBook();
+                if (Waitinglist::IsBookingnameExit(C.getEventName()))
+                {
+                    Waitinglist wait = Waitinglist::Findname(C.getEventName());
+                    C.setCustomerId(wait.getcustomer());
+                    C.setBookingDate(clsInputValidate::Datetime());
+                    C.setEventName(wait.getEventname());
+                }
+                else
+                {
+                    C.setCheckBook();
+                }
                 _SaveBookingDataToFile(vBooking);
                 return;
             }
@@ -699,25 +752,36 @@ public:
         Booking booking;
         Movie movie;
 
-        if (!IsBookingExit(globCustomer.getCustomerId(), name))
+        if (!IsBookingExit(globCustomer.getCustomerId(), name) && !Waitinglist::IsBookingExit(globCustomer.getCustomerId(), name))
         {
             cout << "\n\t\t\t\tthis event not Exist or no book!";
             return false;
         }
         Booking book = Find(globCustomer.getCustomerId(), name);
-        delBooking(book);
-        movie.setTotalSeats(movie.getTotalSeats() + 1);
-        vector <Movie> vMovie = movie._LoadMovieDataFromFile();
-        for (Movie& C : vMovie)
+
+        Waitinglist wait = Waitinglist::Find(globCustomer.getCustomerId(), name);
+        if (book.getEventName() == name)
         {
-            if (C.getEventName() == movie.getEventName())
+            delBooking(book);
+            if (!Waitinglist::IsBookingnameExit(name))
+                movie.setTotalSeats(movie.getTotalSeats() + 1);
+            vector <Movie> vMovie = movie._LoadMovieDataFromFile();
+            for (Movie& C : vMovie)
             {
-                C = movie;
-                break;
+                if (C.getEventName() == movie.getEventName())
+                {
+                    C = movie;
+                    break;
+                }
+
             }
+            movie._SaveMoviesDataToFile(vMovie);
 
         }
-        movie._SaveMoviesDataToFile(vMovie);
+        else
+        {
+            Waitinglist::RemoveCustomer(wait);
+        }
         return true;
     }
     static bool CancelConcert(string name)
@@ -725,25 +789,40 @@ public:
         Booking booking;
         Concert movie;
 
-        if (!IsBookingExit(globCustomer.getCustomerId(), name))
+        if (!IsBookingExit(globCustomer.getCustomerId(), name) && !Waitinglist::IsBookingExit(globCustomer.getCustomerId(), name))
         {
             cout << "\n\t\t\t\tthis event not Exist or no book!";
             return false;
         }
         Booking book = Find(globCustomer.getCustomerId(), name);
-        delBooking(book);
-        movie.setTotalSeats(movie.getTotalSeats() + 1);
-        vector <Concert> vMovie = movie._LoadConcertDataFromFile();
-        for (Concert& C : vMovie)
+
+        Waitinglist wait = Waitinglist::Find(globCustomer.getCustomerId(), name);
+
+        if (book.getEventName() == name)
         {
-            if (C.getEventName() == movie.getEventName())
+            delBooking(book);
+
+            if (!Waitinglist::IsBookingnameExit(name))
+                movie.setTotalSeats(movie.getTotalSeats() + 1);
+
+            vector <Concert> vMovie = movie._LoadConcertDataFromFile();
+
+            for (Concert& C : vMovie)
             {
-                C = movie;
-                break;
+                if (C.getEventName() == movie.getEventName())
+                {
+                    C = movie;
+                    break;
+                }
+
             }
+            movie._SaveConcertDataToFile(vMovie);
 
         }
-        movie._SaveConcertDataToFile(vMovie);
+        else
+        {
+            Waitinglist::RemoveCustomer(wait);
+        }
         return true;
     }
     static bool CancelPlay(string name)
@@ -751,25 +830,40 @@ public:
         Booking booking;
         Play movie;
 
-        if (!IsBookingExit(globCustomer.getCustomerId(), name))
+        if (!IsBookingExit(globCustomer.getCustomerId(), name) && !Waitinglist::IsBookingExit(globCustomer.getCustomerId(), name))
         {
             cout << "\n\t\t\t\tthis event not Exist or no book!";
             return false;
         }
-        Booking book = Find(globCustomer.getCustomerId(), name);
-        delBooking(book);
-        movie.setTotalSeats(movie.getTotalSeats() + 1);
-        vector <Play> vMovie = movie._LoadConcertDataFromFile();
-        for (Play& C : vMovie)
-        {
-            if (C.getEventName() == movie.getEventName())
-            {
-                C = movie;
-                break;
-            }
 
+        Booking book = Find(globCustomer.getCustomerId(), name);
+
+        Waitinglist wait = Waitinglist::Find(globCustomer.getCustomerId(), name);
+        
+        if (book.getEventName() == name)
+        {
+            delBooking(book);
+
+            if (!Waitinglist::IsBookingnameExit(name))
+                movie.setTotalSeats(movie.getTotalSeats() + 1);
+
+            vector <Play> vMovie = movie._LoadConcertDataFromFile();
+
+            for (Play& C : vMovie)
+            {
+                if (C.getEventName() == movie.getEventName())
+                {
+                    C = movie;
+                    break;
+                }
+
+            }
+            movie._SaveConcertDataToFile(vMovie);
         }
-        movie._SaveConcertDataToFile(vMovie);
+        else
+        {
+            Waitinglist::RemoveCustomer(wait);
+        }
         return true;
     }
 
