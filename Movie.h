@@ -193,6 +193,8 @@ public:
 		return Movie("", "", "", "", "", 0.0, 0, "", "", "");
 	}
 
+	
+
 	bool IsEventNameExist(string name)
 	{
 

@@ -13,6 +13,7 @@
 #include "Movie.h"
 #include "Concert.h"
 #include "Play.h"
+#include "EventFactory.h"
 
 
 using namespace std;

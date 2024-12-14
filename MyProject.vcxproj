@@ -144,6 +144,7 @@
     <ClInclude Include="Customer.h" />
     <ClInclude Include="CustomerInterface.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="EventFactory.h" />
     <ClInclude Include="GlobalCustomer.h" />
     <ClInclude Include="GlobalEvent.h" />
     <ClInclude Include="OperationScreen.h" />
