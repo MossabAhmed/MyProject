@@ -27,9 +27,11 @@ class CustomerInterface : public clsScreen
 		cout << "\t\t\t\t[1] Purchase Ticket.\n";
 		cout << "\t\t\t\t[2] Cancel Booking.\n";
 		cout << "\t\t\t\t[3] Show All Bookings.\n";
-		cout << "\t\t\t\t[4] Events Screen.\n";
+		cout << "\t\t\t\t[4] Show Event.\n";
+		cout << "\t\t\t\t[5] Payment Book.\n";
+		cout << "\t\t\t\t[6] Back to Event Screen.\n";
 		cout << "\t\t\t\t========================================================\n";
-		cout << "\t\t\t\tenter number from [1] to [4]? ";
+		cout << "\t\t\t\tenter number from [1] to [6]? ";
 	}
 
 	static void Requiment(string type)
@@ -42,7 +44,7 @@ class CustomerInterface : public clsScreen
 		try
 		{
 			choice = clsInputValidate::ReadIntNumber();
-			if (choice < 1 || choice > 4)
+			if (choice < 1 || choice > 6)
 				throw "error";
 		}
 		catch (...)
@@ -68,6 +70,18 @@ class CustomerInterface : public clsScreen
 			gobaacktorequiment(type);
 			break;
 		case 4:
+			system("cls");
+			RequimentScreen::showEvent(type);
+			gobaacktorequiment(type);
+			break;
+		case 5:
+			system("cls");
+			RequimentScreen::PayTicket();
+			gobaacktorequiment(type);
+			break;
+		case 6:
+			system("cls");
+			showtypeEvent();
 			break;
 		default:
 			gobacktomeneu();
@@ -122,6 +136,7 @@ public:
 			gobacktomeneu();
 			break;
 		case 4:
+			exit(0);
 			return;
 
 		default:

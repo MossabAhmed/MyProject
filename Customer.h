@@ -18,6 +18,12 @@ class Customer : public clsPerson
         vector<string> vCustomerData;
         vCustomerData = clsString::Split(Line, Seperator);
 
+        if (vCustomerData.empty())
+        {
+			return Customer("", "", "", "", "", "");
+
+        }
+
         return Customer(vCustomerData[0], vCustomerData[1], vCustomerData[2],
             vCustomerData[3], vCustomerData[4], vCustomerData[5]);
 

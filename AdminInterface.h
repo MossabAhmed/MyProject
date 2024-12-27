@@ -77,7 +77,6 @@ class AdminInterface : public clsScreen
 			gobaacktorequiment(type);
 			break;
 		case 5:
-			system("cls");
 			gobacktomeneu();
 			break;
 
@@ -133,6 +132,7 @@ public:
 			gobacktomeneu();
 			break;
 		case 4:
+			exit(0);
 			return;
 
 		default:

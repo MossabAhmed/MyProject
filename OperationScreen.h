@@ -55,7 +55,13 @@ public:
 			Play event;
 			globEvent = &event;
 		}
-		globEvent->DeleteEvent();
+		cout << "\t\t\t\tenter name of event? ";
+		string name = clsInputValidate::ReadString();
+		if (globEvent->DeleteEvent(name))
+		{
+			cout << "\n\t\t\t\tDelete Successfully!";
+			Booking::deleteBook(name);
+		}
 	}
 	static void ModifyEvent(string type)
 	{

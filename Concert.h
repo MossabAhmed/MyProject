@@ -352,16 +352,12 @@ public:
 		cout << "\n\t\t\t\tModify Successfuly!";
 	}
 
-	void DeleteEvent()
+	bool DeleteEvent(string name)
 	{
-
-		cout << "\t\t\t\tenter name of event? ";
-		string name = clsInputValidate::ReadString();
-
-		while (!IsEventNameExist(name))
+		if (!IsEventNameExist(name))
 		{
-			cout << "\n\t\t\t\tthis event not exit, enter another name: ";
-			name = clsInputValidate::ReadString();
+			cout << "\n\t\t\t\tthis event not exit";
+			return false;
 		}
 
 		vector <Concert> vEvent = _LoadConcertDataFromFile();
@@ -377,14 +373,14 @@ public:
 				{
 					C.setCheckdel();
 					_SaveConcertDataToFile(vEvent);
+					return true;
 				}
 				else
-					return;
+					return false;
 				break;
 
 			}
 		}
-		cout << "\n\t\t\t\tDelete Successfully!";
 	}
 
 	static void PrintMovieRecordLine(Concert C)

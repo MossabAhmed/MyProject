@@ -369,16 +369,12 @@ public:
 	}
 
 
-	void DeleteEvent()
+	bool DeleteEvent(string name)
 	{
-
-		cout << "\t\t\t\tenter name of event? ";
-		string name = clsInputValidate::ReadString();
-
-		while (!IsEventNameExist(name))
+		if (!IsEventNameExist(name))
 		{
-			cout << "\n\t\t\t\tthis event not exit, enter another name: ";
-			name = clsInputValidate::ReadString();
+			cout << "\n\t\t\t\tthis event not exit";
+			return false;
 		}
 
 		vector <Movie> vEvent = _LoadMovieDataFromFile();
@@ -394,14 +390,14 @@ public:
 				{
 					C.setCheckdel();
 					_SaveMoviesDataToFile(vEvent);
+					return true;
 				}
 				else
-					return;
+					return false;
 				break;
 
 			}
 		}
-		cout << "\n\t\t\t\tDelete Successfully!";
 	}
 
 
@@ -414,10 +410,10 @@ public:
 		cout << "| " << setw(11) << left << C.getDate();
 		cout << "| " << setw(10) << left << C.getEventId();
 		cout << "| " << setw(10) << left << C.getPrice();
-		cout << "| " << setw(3) << left << C.getTotalSeats();
+		cout << "| " << setw(10) << left << C.getTotalSeats();
 		cout << "| " << setw(15) << left << C.getDirector();
-		cout << "| " << setw(10) << left << C.getType();
-		cout << "| " << setw(3) << left << C.getAge();
+		cout << "| " << setw(11) << left << C.getType();
+		cout << "| " << setw(10) << left << C.getAge();
 
 	}
 
@@ -434,10 +430,10 @@ public:
 		cout << "| " << left << setw(11) << "Date";
 		cout << "| " << left << setw(10) << "EventID";
 		cout << "| " << left << setw(10) << "Price";
-		cout << "| " << left << setw(3) << "Total Seats";
+		cout << "| " << left << setw(10) << "Total Seats";
 		cout << "| " << left << setw(15) << "Director";
-		cout << "| " << left << setw(10) << "Movie Type";
-		cout << "| " << left << setw(3) << "Age Rating";
+		cout << "| " << left << setw(11) << "Movie Type";
+		cout << "| " << left << setw(10) << "Age Rating";
 		cout << setw(8) << left << "" << "\n\t_______________________________________________________";
 		cout << "_________________________________________\n" << endl;
 

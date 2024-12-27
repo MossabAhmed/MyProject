@@ -22,7 +22,6 @@ public:
     }
 
     bool validateCard() const {
-        // Basic validation
         if (_cardNumber.length() != 8) return false;
         if (_cvv.length() != 3) return false;
         if (_cardHolderName.empty()) return false;

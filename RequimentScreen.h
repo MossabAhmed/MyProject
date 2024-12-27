@@ -18,6 +18,7 @@ public:
 		cout << "\t\t\t\tenter name of event? ";
 		string name = clsInputValidate::ReadString();
 
+
 		if (type == "Movie")
 		{
 			if (Booking::moviepurchase(name))
@@ -83,6 +84,49 @@ public:
 		string sub = globCustomer.getName();
 		_DrawScreenHeader(title, sub);
 		Booking::ShowBookingList();
+	}
+
+	static void showEvent(string type)
+	{
+		system("cls");
+		string title = type + "Screen";
+		_DrawScreenHeader(title);
+		if (type == "Movie")
+		{
+			Movie movie;
+			movie.ShowEventList();
+		}
+		else if (type == "Concert")
+		{
+			Concert concert;
+			concert.ShowEventList();
+		}
+		else
+		{
+			Play play;
+			play.ShowEventList();
+
+		}
+	}
+
+	static void PayTicket()
+	{
+		system("cls");
+		string title = "Pay Ticket Screen";
+		_DrawScreenHeader(title);
+		if (!Booking::ShowBookingList(false))
+		{
+			cout << "\n\t\t\t\tYou have not book...";
+			return;
+		}
+
+		cout << "\t\t\t\tenter name of event? ";
+		string name = clsInputValidate::ReadString();
+
+		if (Booking::PayTicket(name))
+			cout << "\n\t\t\t\tPay Done!";
+		else
+			cout << "\n\t\t\t\tPay not Done!";
 	}
 };
 

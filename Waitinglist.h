@@ -256,6 +256,19 @@ class Waitinglist
             return true;
         }
 
+        static void DeleteWait(string name)
+        {
+            vector <Waitinglist> vWait = _LoadBookingDataFromFile();
+            for (Waitinglist& C : vWait)
+            {
+                if (C.getEventname() == name)
+                {
+                    C.checkdel = true;
+                }
+            }
+            _SaveBookingDataToFile(vWait);
+        }
+
         static bool RemoveCustomer(Waitinglist wait)
         {
             vector <Waitinglist> vWait = _LoadBookingDataFromFile();

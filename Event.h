@@ -7,6 +7,7 @@
 #include <fstream>
 #include <random>
 #include <memory>
+
 using namespace std;
 
 
@@ -122,7 +123,7 @@ public:
 
 	virtual void ModifyEvent() = 0;
 
-	virtual void DeleteEvent() = 0;
+	virtual bool DeleteEvent(string name) = 0;
 
 	virtual void ShowEventList() = 0;
 
