@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -131,15 +131,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin.h" />
+    <ClInclude Include="AdminInterface.h" />
+    <ClInclude Include="BankCard.h" />
     <ClInclude Include="Booking.h" />
     <ClInclude Include="clsDate.h" />
     <ClInclude Include="clsInputValidate.h" />
     <ClInclude Include="clsPerson.h" />
+    <ClInclude Include="clsScreen.h" />
     <ClInclude Include="clsString.h" />
+    <ClInclude Include="clsUserScreen.h" />
+    <ClInclude Include="Concert.h" />
     <ClInclude Include="Customer.h" />
+    <ClInclude Include="CustomerInterface.h" />
     <ClInclude Include="Event.h" />
-    <ClInclude Include="Seat.h" />
-    <ClInclude Include="Waiting.h" />
+    <ClInclude Include="EventFactory.h" />
+    <ClInclude Include="GlobalCustomer.h" />
+    <ClInclude Include="GlobalEvent.h" />
+    <ClInclude Include="OperationScreen.h" />
+    <ClInclude Include="Payment.h" />
+    <ClInclude Include="RequimentScreen.h" />
+    <ClInclude Include="Tadawul.h" />
+    <ClInclude Include="Waitinglist.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

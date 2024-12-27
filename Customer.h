@@ -5,21 +5,27 @@
 #include "clsString.h"
 #include "clsInputValidate.h"
 #include <vector>
+#include <random>
 #include <fstream>
 using namespace std;
 
+
 class Customer : public clsPerson
 {
-	string _CustomerId;
-
-
+    string _CustomerId;
     static Customer _ConvertLinetoCustomerObject(string Line, string Seperator = "#//#")
     {
         vector<string> vCustomerData;
         vCustomerData = clsString::Split(Line, Seperator);
 
-        return Customer(enStatue::enCustomer, vCustomerData[0], vCustomerData[1], vCustomerData[2],
-            vCustomerData[3]);
+        if (vCustomerData.empty())
+        {
+			return Customer("", "", "", "", "", "");
+
+        }
+
+        return Customer(vCustomerData[0], vCustomerData[1], vCustomerData[2],
+            vCustomerData[3], vCustomerData[4], vCustomerData[5]);
 
     }
 
@@ -27,9 +33,11 @@ class Customer : public clsPerson
     {
 
         string stCustomerRecord = "";
-        stCustomerRecord += customer.GetName() + Seperator;
-        stCustomerRecord += customer.GetEmail() + Seperator;
-        stCustomerRecord += customer.GetPhone() + Seperator;
+        stCustomerRecord += customer.getName() + Seperator;
+        stCustomerRecord += customer.getUsername() + Seperator;
+        stCustomerRecord += customer.getPassword() + Seperator;
+        stCustomerRecord += customer.getPhone() + Seperator;
+        stCustomerRecord += customer.getEmail() + Seperator;
         stCustomerRecord += customer.getCustomerId();
 
 
@@ -44,7 +52,7 @@ class Customer : public clsPerson
 
         fstream MyFile;
         MyFile.open("Customer.txt", ios::in);//read Mode
-         
+
         if (MyFile.is_open())
         {
 
@@ -111,13 +119,13 @@ class Customer : public clsPerson
 
 public:
 
-    Customer(enStatue statue, string name, string email, string phone, string customerId) :
-        clsPerson(statue, name, email, phone)
+    Customer(string name, string username, string password, string phone, string email, string customerId) :
+        clsPerson(name, username, password, phone, email)
     {
         _CustomerId = customerId;
     }
 
-    Customer(){}
+    Customer() {}
 
     void setCustomerId(string customerId)
     {
@@ -154,10 +162,18 @@ public:
             MyFile.close();
 
         }
-        return Customer(enStatue::enCustomer, "", "", "", "");
+        return Customer("", "", "", "", "", "");
     }
 
-    static Customer FindName(string Name)
+    static bool IsCustomerIdExist(string customerId)
+    {
+
+        Customer customer = Customer::Find(customerId);
+
+        return customer.getCustomerId() == customerId;
+    }
+
+    static Customer FindUserName(string Name)
     {
 
 
@@ -171,7 +187,7 @@ public:
             while (getline(MyFile, Line))
             {
                 Customer customer = _ConvertLinetoCustomerObject(Line);
-                if (customer.GetName() == Name)
+                if (customer.getUsername() == Name)
                 {
                     MyFile.close();
                     return customer;
@@ -182,49 +198,82 @@ public:
             MyFile.close();
 
         }
-        return Customer(enStatue::enCustomer, "", "", "", "");
+        return Customer("", "", "", "", "", "");
     }
 
-    static bool IsCustomerExist(string customerId)
+    static bool IsCustomerUserNameExist(string Name)
     {
 
-        Customer customer = Customer::Find(customerId);
+        Customer customer = Customer::FindUserName(Name);
 
-        return customer.getCustomerId() == customerId;
+        return customer.getUsername() == Name;
     }
 
-
-    static bool IsCustomerNameExist(string Name)
+    static Customer FindCustomer(string name, string password)
     {
 
-        Customer customer = Customer::FindName(Name);
+        fstream MyFile;
+        MyFile.open("Customer.txt", ios::in);//read Mode
 
-        return customer.GetName() == Name;
+        if (MyFile.is_open())
+        {
+            string Line;
+            while (getline(MyFile, Line))
+            {
+                Customer customer = _ConvertLinetoCustomerObject(Line);
+                if (customer.getUsername() == name && customer.getPassword() == password)
+                {
+                    MyFile.close();
+                    return customer;
+                }
+
+            }
+
+            MyFile.close();
+
+        }
+        return Customer("", "", "", "", "", "");
+    }
+
+    static bool IsCustomerExist(string name, string password)
+    {
+
+        Customer customer = Customer::FindCustomer(name, password);
+
+        return customer.getUsername() == name && customer.getPassword() == password;
     }
 
     static void AddCustomer(string& name)
     {
-        Customer customer(enStatue::enCustomer, "", "", "", "");
-        while (IsCustomerNameExist(name))
+        Customer customer;
+        while (IsCustomerUserNameExist(name))
         {
-            cout << "\n\t\t\t\tthis event already exit, enter another name: ";
-            name = clsInputValidate::ReadString();
+            cout << "\n\t\t\t\tthis username already exit, enter another name: ";
+            name = clsInputValidate::ReadName();
         }
-        customer.SetName(name);
+        customer.setUsername(name);
 
-        cout << "\n\t\t\t\tenter your email? ";
+        cout << "\n\t\t\t\tenter your name? ";
         string word = clsInputValidate::ReadString();
-        customer.SetEmail(word);
+        customer.setName(word);
+
+        cout << "\n\t\t\t\tenter password? ";
+        word = clsInputValidate::ReadPassword();
+        customer.setPassword(word);
 
         cout << "\n\t\t\t\tenter your phone? ";
         word = clsInputValidate::ReadString();
-        customer.SetPhone(word);
+        customer.setPhone(word);
+
+        cout << "\n\t\t\t\tenter your email? ";
+        word = clsInputValidate::ReadEmail();
+        customer.setEmail(word);
 
         random_device rd;
         uniform_int_distribution<int> dist(2000000, 2999999);
         word = to_string(dist(rd));
 
-        while (IsCustomerExist(word))
+        while (IsCustomerIdExist(word))
         {
             word = to_string(dist(rd));
 
@@ -232,6 +281,9 @@ public:
         customer.setCustomerId(word);
         customer._AddDataLineToFile(_ConverCustomerObjectToLine(customer));
     }
-    
+
+
+
 };
+
 

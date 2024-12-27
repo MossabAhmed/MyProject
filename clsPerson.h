@@ -1,65 +1,78 @@
 #pragma once
-
 #include <iostream>
 #include <string>
 using namespace std;
-
-enum enStatue { enAdmain = 1, enCustomer };
-
 class clsPerson
 {
-private:
-    enStatue _Statue;
     string _Name;
-    string _Email;
+    string _Username;
+    string _Password;
     string _Phone;
+    string _Email;
 
 public:
 
-    clsPerson(enStatue statue ,string Name, string Email, string Phone)
+    clsPerson(string name, string username, string password, string phone, string email)
     {
-        _Statue = statue;
-        _Name = Name;
-        _Email = Email;
-        _Phone = Phone;
+        _Name = name;
+        _Username = username;
+        _Password = password;
+        _Phone = phone;
+        _Email = email;
     }
 
-    clsPerson(){}
+    clsPerson() {}
 
-    void SetName(string Name)
+    void setName(string name)
     {
-        _Name = Name;
+        _Name = name;
     }
 
-    string GetName()
+    string getName()
     {
         return _Name;
     }
-    __declspec(property(get = GetFirstName, put = SetFirstName)) string FirstName;
 
-    void SetEmail(string Email)
+    void setUsername(string name)
     {
-        _Email = Email;
+        _Username = name;
     }
 
-    string GetEmail()
+    string getUsername()
     {
-        return _Email;
-    }
-    __declspec(property(get = GetEmail, put = SetEmail)) string Email;
-
-    void SetPhone(string Phone)
-    {
-        _Phone = Phone;
+        return _Username;
     }
 
-    string GetPhone()
+    void setPassword(string name)
+    {
+        _Password = name;
+    }
+
+    string getPassword()
+    {
+        return _Password;
+    }
+
+    void setPhone(string name)
+    {
+        _Phone = name;
+    }
+
+    string getPhone()
     {
         return _Phone;
     }
-    __declspec(property(get = GetPhone, put = SetPhone)) string Phone;
 
-    
+    void setEmail(string name)
+    {
+        _Email = name;
+    }
+
+    string getEmail()
+    {
+        return _Email;
+    }
+
 
 };
 
